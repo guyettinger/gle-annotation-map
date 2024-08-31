@@ -1,26 +1,30 @@
-import { AppShell, Box, Burger, Group, MantineProvider, Skeleton } from '@mantine/core';
+import { AppShell, Box, Burger, Group, MantineProvider, Skeleton, Text } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import '@mantine/core/styles.css';
 import { Map } from './components';
-import { useDisclosure } from '@mantine/hooks';
 
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
 const footerHeight = 60;
+const navbarWidth = 300;
+const asideWidth = 300;
 
 const App = () => {
   const [opened, { toggle }] = useDisclosure();
+
   return (
     <MantineProvider>
       <AppShell
         header={{ height: headerHeight }}
         footer={{ height: footerHeight }}
-        navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
-        aside={{ width: 300, breakpoint: 'md', collapsed: { desktop: false, mobile: true } }}
+        navbar={{ width: navbarWidth, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+        aside={{ width: asideWidth, breakpoint: 'md', collapsed: { desktop: false, mobile: true } }}
         padding="md"
       >
         <AppShell.Header>
           <Group h="100%" px="md">
             <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <Text>Logo</Text>
           </Group>
         </AppShell.Header>
         <AppShell.Navbar p="md">
@@ -33,7 +37,6 @@ const App = () => {
         </AppShell.Navbar>
         <AppShell.Main
           h="calc(100vh - var(--app-shell-header-height, 0px) - var(--app-shell-footer-height, 0px))"
-          m={0}
           p={0}
           pt={headerHeight}
           pb={footerHeight}
