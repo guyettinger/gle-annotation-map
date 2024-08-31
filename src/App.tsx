@@ -6,7 +6,6 @@ import { useDisclosure } from '@mantine/hooks';
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
 const footerHeight = 60;
-const mainHeight = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
 
 const App = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -32,8 +31,15 @@ const App = () => {
               <Skeleton key={index} h={28} mt="sm" animate={false} />
             ))}
         </AppShell.Navbar>
-        <AppShell.Main m={0} p={0}>
-          <Box h={mainHeight} style={{ flex: 1, marginTop: headerHeight }}>
+        <AppShell.Main
+          h="calc(100vh - var(--app-shell-header-height, 0px) - var(--app-shell-footer-height, 0px))"
+          m={0}
+          p={0}
+          pt={headerHeight}
+          pb={footerHeight}
+          style={{ display: 'flex' }}
+        >
+          <Box style={{ flex: 1 }}>
             <Map mapboxAccessToken={MAPBOX_ACCESS_TOKEN} />
           </Box>
         </AppShell.Main>
