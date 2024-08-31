@@ -1,0 +1,8 @@
+type Annotation {
+  id: Int!
+  title: String!
+}
+
+type Query {
+  annotations: [Annotation]
+}
