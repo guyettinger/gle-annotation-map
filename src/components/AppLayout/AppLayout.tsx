@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { MapLayerMouseEvent } from 'react-map-gl';
-import { AppShell, Box, Burger, Group, Text } from '@mantine/core';
+import { ActionIcon, AppShell, Box, Burger, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import '@mantine/core/styles.css';
 import { Annotation } from '../../../graphql/client/graphql.ts';
@@ -10,6 +10,8 @@ import { useAnnotations } from '../../client/annotation/useAnnotations.tsx';
 import { AnnotationList } from '../AnnotationList';
 import { AnnotationMarker } from '../AnnotationMarker';
 import { Map } from '../Map';
+import { AnnotationItem } from '../AnnotationItem';
+import { IconX } from '@tabler/icons-react';
 
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
@@ -32,10 +34,10 @@ export const AppLayout = () => {
 
   const handleMapClick = (e: MapLayerMouseEvent) => {
     const newAnnotation = {
-      title: emoji,
       latitude: e.lngLat.lat,
       longitude: e.lngLat.lng,
       symbol: emoji,
+      note: '',
     };
     console.log(newAnnotation);
     createAnnotationMutation.mutate({
@@ -48,6 +50,25 @@ export const AppLayout = () => {
     setEmoji(emojiData.emoji);
     event.preventDefault();
   }, []);
+
+  const handleRenderAnnotationItem = (annotation: Annotation) => {
+    return (
+      <AnnotationItem
+        key={annotation.id}
+        annotation={annotation}
+        actionArea={
+          <ActionIcon
+            variant="gradient"
+            size="sm"
+            aria-label="Gradient action icon"
+            gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+          >
+            <IconX/>
+          </ActionIcon>
+        }
+      />
+    );
+  };
 
   return (
     <AppShell
@@ -68,7 +89,10 @@ export const AppLayout = () => {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        <AnnotationList annotations={annotations} />
+        <AnnotationList
+          annotations={annotations}
+          renderAnnotationItem={handleRenderAnnotationItem}
+        />
       </AppShell.Navbar>
       <AppShell.Main
         h="calc(100vh - var(--app-shell-header-height, 0px) - var(--app-shell-footer-height, 0px))"

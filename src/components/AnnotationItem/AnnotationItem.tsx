@@ -1,11 +1,16 @@
-import { Card, Stack, Text } from '@mantine/core';
+import { Card, Group, Stack, Text } from '@mantine/core';
 import { AnnotationItemProps } from './AnnotationItem.types.ts';
 
-export const AnnotationItem = ({ annotation }: AnnotationItemProps) => {
+export const AnnotationItem = ({ annotation, actionArea }: AnnotationItemProps) => {
   return (
     <Card key={annotation.id}  shadow="sm" padding="lg" radius="md" withBorder >
       <Stack>
-        <Text>{annotation.title}</Text>
+        <Group>
+          <Text>{annotation.symbol}</Text>
+          {!!actionArea && (
+            actionArea
+          )}
+        </Group>
         <Text size="xs">
           {annotation.latitude}, {annotation.longitude}
         </Text>

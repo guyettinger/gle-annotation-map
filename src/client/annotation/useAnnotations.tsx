@@ -6,10 +6,10 @@ const annotationsQuery = graphql(/* GraphQL */ `
   query Annotations {
     annotations {
       id
-      title
       latitude
       longitude
       symbol
+      note
     }
   }
 `);

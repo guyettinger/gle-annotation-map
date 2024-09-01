@@ -1,12 +1,13 @@
 import express from 'express';
 import { createSchema, createYoga } from 'graphql-yoga';
 import { readFileSync } from 'node:fs';
-import { createContext, type GraphQLContext } from './context.ts';
-import {
-  MutationCreateAnnotationArgs,
-  QueryGetAnnotationArgs,
-  Resolvers,
-} from '../../graphql/server/resolvers-types.ts';
+import { createContext } from './context.ts';
+import { Resolvers } from '../../graphql/server/resolvers-types.ts';
+import { createAnnotation } from './annotation/createAnnotation.ts';
+import { updateAnnotation } from './annotation/updateAnnotation.ts';
+import { deleteAnnotation } from './annotation/deleteAnnotation.ts';
+import { getAnnotation } from './annotation/getAnnotation.ts';
+import { getAnnotations } from './annotation/getAnnotations.ts';
 
 // create an express api
 const api = express();
@@ -15,32 +16,13 @@ const api = express();
 const typeDefs = readFileSync('./graphql/schema.graphql', 'utf8');
 const resolvers: Resolvers = {
   Query: {
-    annotations: (_parent: unknown, _args: {}, context: GraphQLContext) => {
-      return context.prisma.annotation.findMany();
-    },
-    getAnnotation: (_parent: unknown, args: QueryGetAnnotationArgs, context: GraphQLContext) => {
-      return context.prisma.annotation.findUnique({
-        where: {
-          id: args.id,
-        },
-      });
-    },
+    annotations: getAnnotations,
+    getAnnotation,
   },
   Mutation: {
-    createAnnotation: async (
-      _parent: unknown,
-      args:  Partial<MutationCreateAnnotationArgs>,
-      context: GraphQLContext,
-    ) => {
-      return context.prisma.annotation.create({
-        data: {
-          title: args.input?.title ?? '',
-          latitude: args.input?.latitude ?? 0.0,
-          longitude: args.input?.longitude ?? 0.0,
-          symbol: args.input?.symbol ?? '',
-        },
-      });
-    },
+    createAnnotation,
+    updateAnnotation,
+    deleteAnnotation,
   },
 };
 

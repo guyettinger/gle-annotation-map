@@ -12,7 +12,6 @@ const createAnnotationMutation = graphql(/* GraphQL */ `
 `);
 
 export const useCreateAnnotation = () => {
-
   const queryClient = useQueryClient()
 
   return useMutation({

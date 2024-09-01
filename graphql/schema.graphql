@@ -1,16 +1,16 @@
 input AnnotationInput {
-  title: String
   latitude: Float
   longitude: Float
   symbol: String
+  note: String
 }
 
 type Annotation {
   id: Int!
-  title: String
   latitude: Float
   longitude: Float
   symbol: String
+  note: String
 }
 
 type Query {
@@ -21,4 +21,5 @@ type Query {
 type Mutation {
   createAnnotation(input: AnnotationInput): Annotation
   updateAnnotation(id: Int!, input: AnnotationInput): Annotation
+  deleteAnnotation(id: Int!): Annotation
 }

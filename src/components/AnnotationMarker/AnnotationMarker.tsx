@@ -9,7 +9,7 @@ export const AnnotationMarker = ({ annotation }: AnnotationMarkerProps) => {
       latitude={annotation.latitude ?? 0}
       longitude={annotation.longitude ?? 0}
     >
-      <Text>{annotation.title}</Text>
+      <Text>{annotation.symbol}</Text>
     </MapboxMarker>
   );
 };

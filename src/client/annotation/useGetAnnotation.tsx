@@ -6,10 +6,10 @@ const getAnnotationQuery = graphql(/* GraphQL */ `
   query getAnnotation($id: Int!) {
     getAnnotation(id: $id) {
       id
-      title
       latitude
       longitude
       symbol
+      note
     }
   }
 `);
