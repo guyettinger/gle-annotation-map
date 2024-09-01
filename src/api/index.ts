@@ -1,7 +1,8 @@
 import express from 'express';
 import { createSchema, createYoga } from 'graphql-yoga';
 import { readFileSync } from 'node:fs';
-import { Resolvers } from '../graphql/resolvers-types.ts';
+import { MutationCreateAnnotationArgs, Resolvers } from '../graphql/resolvers-types.ts';
+import { createContext, type GraphQLContext } from './context.ts';
 
 // create an express api
 const api = express();
@@ -11,11 +12,21 @@ const typeDefs = readFileSync('./src/schema/schema.graphql', 'utf8');
 const resolvers: Resolvers = {
   Query: {
     // typed resolvers!
-    annotations: () => {
-      return [
-        { id: 1, title: 'first' },
-        { id: 2, title: 'second' },
-      ];
+    annotations: (_parent: unknown, _args: {}, context: GraphQLContext) => {
+      return context.prisma.annotation.findMany();
+    },
+  },
+  Mutation: {
+    createAnnotation: async (
+      _parent: unknown,
+      args: MutationCreateAnnotationArgs,
+      context: GraphQLContext,
+    ) => {
+      return context.prisma.annotation.create({
+        data: {
+          title: args.input?.title ?? '',
+        },
+      });
     },
   },
 };
@@ -23,7 +34,8 @@ const resolvers: Resolvers = {
 const schema = createSchema({ typeDefs, resolvers });
 
 // create a graphql api
-const graphqlApi = createYoga({ schema });
+// @ts-ignore
+const graphqlApi = createYoga({ schema, context: createContext });
 
 // bind the graphql api to /graphql
 api.use(graphqlApi.graphqlEndpoint, graphqlApi);

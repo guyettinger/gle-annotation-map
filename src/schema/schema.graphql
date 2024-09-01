@@ -1,8 +1,18 @@
+input AnnotationInput {
+  title: String
+}
+
 type Annotation {
   id: Int!
-  title: String!
+  title: String
 }
 
 type Query {
   annotations: [Annotation]
+  getAnnotation(id: Int!): Annotation
+}
+
+type Mutation {
+  createAnnotation(input: AnnotationInput): Annotation
+  updateAnnotation(id: Int!, input: AnnotationInput): Annotation
 }
