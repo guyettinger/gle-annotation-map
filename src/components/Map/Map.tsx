@@ -1,25 +1,24 @@
-import { useEffect } from 'react';
-import { Map as MapboxMap } from 'react-map-gl';
+import { useEffect, useState } from 'react';
+import { Map as MapboxMap, Marker as MapboxMarker } from 'react-map-gl';
 import { MapProps } from './Map.types.ts';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useAnnotations } from '../../client/annotation/useAnnotations.tsx';
-import { useGetAnnotation } from '../../client/annotation/useGetAnnotation.tsx';
+import { Annotation } from '../../../graphql/client/graphql.ts';
+import { Text } from '@mantine/core';
 
 export const Map = ({ mapboxAccessToken }: MapProps) => {
+  const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  const { data: annotationsData } = useAnnotations();
 
-  const { data:annotationsData } = useAnnotations();
   useEffect(() => {
-    console.log('annotationsData', annotationsData);
+    const updatedAnnotations = annotationsData?.annotations?.filter((x) => !!x);
+    if (!updatedAnnotations) return;
+    setAnnotations(updatedAnnotations);
   }, [annotationsData]);
-
-  const {data:annotationData} = useGetAnnotation(1);
-
-  useEffect(() => {
-    console.log('annotationData', annotationData);
-  }, [annotationData]);
 
   return (
     <MapboxMap
+      reuseMaps
       mapboxAccessToken={mapboxAccessToken}
       initialViewState={{
         longitude: -122.4,
@@ -29,6 +28,16 @@ export const Map = ({ mapboxAccessToken }: MapProps) => {
       attributionControl={false}
       style={{ flex: 1 }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
-    />
+    >
+      {annotations.map((annotation) => (
+        <MapboxMarker
+          key={annotation.id}
+          latitude={annotation.latitude ?? 0}
+          longitude={annotation.longitude ?? 0}
+        >
+          <Text>{annotation.title}</Text>
+        </MapboxMarker>
+      ))}
+    </MapboxMap>
   );
 };

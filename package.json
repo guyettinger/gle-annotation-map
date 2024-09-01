@@ -11,8 +11,8 @@
     "preview": "vite preview",
     "migrate": "prisma migrate dev",
     "generate": "npm run generate-server && npm run generate-client",
-    "generate-client": "graphql-codegen --config codegen-client.ts",
-    "generate-server": "graphql-codegen --config codegen-server.ts"
+    "generate-client": "rimraf ./graphql/client/ && graphql-codegen --config codegen-client.ts",
+    "generate-server": "rimraf ./graphql/server/ && graphql-codegen --config codegen-server.ts"
   },
   "dependencies": {
     "@mantine/core": "^7.12.2",
@@ -46,6 +46,7 @@
     "postcss-simple-vars": "^7.0.1",
     "prettier": "3.3.3",
     "prisma": "5.19.0",
+    "rimraf": "^5.0.5",
     "tsx": "^4.19.0",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
