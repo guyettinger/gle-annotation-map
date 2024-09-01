@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
+import { Text } from '@mantine/core';
 import { Map as MapboxMap, Marker as MapboxMarker } from 'react-map-gl';
 import { MapProps } from './Map.types.ts';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useAnnotations } from '../../client/annotation/useAnnotations.tsx';
 import { Annotation } from '../../../graphql/client/graphql.ts';
-import { Text } from '@mantine/core';
 
 export const Map = ({ mapboxAccessToken }: MapProps) => {
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
