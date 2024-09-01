@@ -3,6 +3,7 @@ import { createSchema, createYoga } from 'graphql-yoga';
 import { readFileSync } from 'node:fs';
 import { MutationCreateAnnotationArgs, Resolvers } from '../graphql/resolvers-types.ts';
 import { createContext, type GraphQLContext } from './context.ts';
+import { QueryGetAnnotationArgs } from '../graphql/graphql.ts';
 
 // create an express api
 const api = express();
@@ -11,9 +12,15 @@ const api = express();
 const typeDefs = readFileSync('./src/schema/schema.graphql', 'utf8');
 const resolvers: Resolvers = {
   Query: {
-    // typed resolvers!
     annotations: (_parent: unknown, _args: {}, context: GraphQLContext) => {
       return context.prisma.annotation.findMany();
+    },
+    getAnnotation: (_parent: unknown, args: QueryGetAnnotationArgs, context: GraphQLContext) => {
+      return context.prisma.annotation.findUnique({
+        where: {
+          id: args.id,
+        },
+      });
     },
   },
   Mutation: {
