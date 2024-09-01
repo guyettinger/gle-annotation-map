@@ -1,6 +1,6 @@
-import { TypedDocumentString } from '../graphql/graphql.ts';
+import { TypedDocumentString } from '../../graphql/client/graphql.ts';
 
-export async function execute<TResult, TVariables>(
+export async function executeGraphql<TResult, TVariables>(
   query: TypedDocumentString<TResult, TVariables>,
   ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
 ) {

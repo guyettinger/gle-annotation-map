@@ -1,15 +1,22 @@
+import { useEffect } from 'react';
 import { Map as MapboxMap } from 'react-map-gl';
 import { MapProps } from './Map.types.ts';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useAnnotations } from '../../client/annotation/useAnnotations.tsx';
-import { useEffect } from 'react';
+import { useGetAnnotation } from '../../client/annotation/useGetAnnotation.tsx';
 
 export const Map = ({ mapboxAccessToken }: MapProps) => {
 
-  const { data } = useAnnotations();
+  const { data:annotationsData } = useAnnotations();
   useEffect(() => {
-    console.log('data', data);
-  }, [data]);
+    console.log('annotationsData', annotationsData);
+  }, [annotationsData]);
+
+  const {data:annotationData} = useGetAnnotation(1);
+
+  useEffect(() => {
+    console.log('annotationData', annotationData);
+  }, [annotationData]);
 
   return (
     <MapboxMap

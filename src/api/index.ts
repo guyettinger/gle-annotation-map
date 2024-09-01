@@ -1,15 +1,18 @@
 import express from 'express';
 import { createSchema, createYoga } from 'graphql-yoga';
 import { readFileSync } from 'node:fs';
-import { MutationCreateAnnotationArgs, Resolvers } from '../graphql/resolvers-types.ts';
 import { createContext, type GraphQLContext } from './context.ts';
-import { QueryGetAnnotationArgs } from '../graphql/graphql.ts';
+import {
+  MutationCreateAnnotationArgs,
+  QueryGetAnnotationArgs,
+  Resolvers,
+} from '../../graphql/server/resolvers-types.ts';
 
 // create an express api
 const api = express();
 
 // create a graphql schema
-const typeDefs = readFileSync('./src/schema/schema.graphql', 'utf8');
+const typeDefs = readFileSync('./graphql/schema.graphql', 'utf8');
 const resolvers: Resolvers = {
   Query: {
     annotations: (_parent: unknown, _args: {}, context: GraphQLContext) => {
@@ -40,7 +43,7 @@ const resolvers: Resolvers = {
 
 const schema = createSchema({ typeDefs, resolvers });
 
-// create a graphql api
+// create a graphql api (using graphql-yoga)
 // @ts-ignore
 const graphqlApi = createYoga({ schema, context: createContext });
 

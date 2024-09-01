@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { graphql } from '../../graphql';
-import { execute } from '../execute.ts';
+import { graphql } from '../../../graphql/client';
+import { executeGraphql } from '../executeGraphql.ts';
 
 const getAnnotationQuery = graphql(/* GraphQL */ `
   query getAnnotation($id: Int!) {
@@ -14,6 +14,6 @@ const getAnnotationQuery = graphql(/* GraphQL */ `
 export const useGetAnnotation = (id: number) => {
   return useQuery({
     queryKey: [`annotation-${id}`],
-    queryFn: () => execute(getAnnotationQuery, { id }),
+    queryFn: () => executeGraphql(getAnnotationQuery, { id }),
   });
 };

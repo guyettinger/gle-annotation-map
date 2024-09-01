@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { graphql } from '../../graphql';
-import { execute } from '../execute.ts';
+import { graphql } from '../../../graphql/client/';
+import { executeGraphql } from '../executeGraphql.ts';
 
 const annotationsQuery = graphql(/* GraphQL */ `
   query Annotations {
@@ -14,6 +14,6 @@ const annotationsQuery = graphql(/* GraphQL */ `
 export const useAnnotations = () => {
   return useQuery({
     queryKey: ['annotations'],
-    queryFn: () => execute(annotationsQuery),
+    queryFn: () => executeGraphql(annotationsQuery),
   });
 };
