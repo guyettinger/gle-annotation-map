@@ -68,7 +68,6 @@ export const AppLayout = () => {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        Navbar
         <AnnotationList annotations={annotations} />
       </AppShell.Navbar>
       <AppShell.Main
