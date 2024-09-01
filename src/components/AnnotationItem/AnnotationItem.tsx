@@ -5,7 +5,7 @@ export const AnnotationItem = ({ annotation, actionArea }: AnnotationItemProps) 
   return (
     <Card key={annotation.id}  shadow="sm" padding="lg" radius="md" withBorder >
       <Stack>
-        <Group>
+        <Group justify="space-between" align="center">
           <Text>{annotation.symbol}</Text>
           {!!actionArea && (
             actionArea

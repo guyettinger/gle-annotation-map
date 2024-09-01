@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, MouseEvent as ReactMouseEvent } from 'react';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { MapLayerMouseEvent } from 'react-map-gl';
 import { ActionIcon, AppShell, Box, Burger, Group, Text } from '@mantine/core';
@@ -12,6 +12,7 @@ import { AnnotationMarker } from '../AnnotationMarker';
 import { Map } from '../Map';
 import { AnnotationItem } from '../AnnotationItem';
 import { IconX } from '@tabler/icons-react';
+import { useDeleteAnnotation } from '../../client/annotation/useDeleteAnnotation.tsx';
 
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
@@ -23,9 +24,10 @@ export const AppLayout = () => {
   const [opened, { toggle }] = useDisclosure();
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [emoji, setEmoji] = useState<string>('👍');
-
-  const createAnnotationMutation = useCreateAnnotation();
   const { data: annotationsData } = useAnnotations();
+  const createAnnotationMutation = useCreateAnnotation();
+  const deleteAnnotationMutation = useDeleteAnnotation();
+
   useEffect(() => {
     const annotations = annotationsData?.annotations?.filter((x) => !!x);
     if (!annotations) return;
@@ -39,16 +41,22 @@ export const AppLayout = () => {
       symbol: emoji,
       note: '',
     };
-    console.log(newAnnotation);
     createAnnotationMutation.mutate({
       input: newAnnotation,
     });
     e.preventDefault();
   };
 
+  const handleAnnotationItemDeleteClick = (annotation:Annotation, event:ReactMouseEvent) => {
+    deleteAnnotationMutation.mutate({
+      id: annotation.id
+    })
+    event.stopPropagation();
+  }
+
   const handleEmojiClick = useCallback((emojiData: EmojiClickData, event: MouseEvent) => {
     setEmoji(emojiData.emoji);
-    event.preventDefault();
+    event.stopPropagation();
   }, []);
 
   const handleRenderAnnotationItem = (annotation: Annotation) => {
@@ -58,10 +66,9 @@ export const AppLayout = () => {
         annotation={annotation}
         actionArea={
           <ActionIcon
-            variant="gradient"
+            variant="transparent"
             size="sm"
-            aria-label="Gradient action icon"
-            gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+            onClick={(e) => handleAnnotationItemDeleteClick(annotation, e)}
           >
             <IconX/>
           </ActionIcon>
