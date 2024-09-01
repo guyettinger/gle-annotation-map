@@ -29,12 +29,15 @@ const resolvers: Resolvers = {
   Mutation: {
     createAnnotation: async (
       _parent: unknown,
-      args: MutationCreateAnnotationArgs,
+      args:  Partial<MutationCreateAnnotationArgs>,
       context: GraphQLContext,
     ) => {
       return context.prisma.annotation.create({
         data: {
           title: args.input?.title ?? '',
+          latitude: args.input?.latitude ?? 0.0,
+          longitude: args.input?.longitude ?? 0.0,
+          symbol: args.input?.symbol ?? '',
         },
       });
     },

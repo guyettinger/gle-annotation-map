@@ -14,4 +14,7 @@ model Annotation {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
   title       String
+  latitude    Float
+  longitude   Float
+  symbol      String
 }

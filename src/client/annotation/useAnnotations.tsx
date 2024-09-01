@@ -7,6 +7,9 @@ const annotationsQuery = graphql(/* GraphQL */ `
     annotations {
       id
       title
+      latitude
+      longitude
+      symbol
     }
   }
 `);

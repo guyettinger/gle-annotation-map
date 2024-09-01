@@ -1,10 +1,16 @@
 input AnnotationInput {
   title: String
+  latitude: Float
+  longitude: Float
+  symbol: String
 }
 
 type Annotation {
   id: Int!
   title: String
+  latitude: Float
+  longitude: Float
+  symbol: String
 }
 
 type Query {

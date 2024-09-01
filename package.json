@@ -9,6 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "migrate": "prisma migrate dev",
     "generate": "npm run generate-server && npm run generate-client",
     "generate-client": "graphql-codegen --config codegen-client.ts",
     "generate-server": "graphql-codegen --config codegen-server.ts"

@@ -7,6 +7,9 @@ const getAnnotationQuery = graphql(/* GraphQL */ `
     getAnnotation(id: $id) {
       id
       title
+      latitude
+      longitude
+      symbol
     }
   }
 `);
