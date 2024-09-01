@@ -16,7 +16,7 @@ const getAnnotationQuery = graphql(/* GraphQL */ `
 
 export const useGetAnnotation = (id: number) => {
   return useQuery({
-    queryKey: [`annotation-${id}`],
+    queryKey: ['annotations', id.toString()],
     queryFn: () => executeGraphql(getAnnotationQuery, { id }),
   });
 };
