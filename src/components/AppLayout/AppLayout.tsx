@@ -13,14 +13,14 @@ import { Map } from '../Map';
 
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
-const footerHeight = 60;
+const footerHeight = 40;
 const navbarWidth = 300;
 const asideWidth = 375;
 
 export const AppLayout = () => {
   const [opened, { toggle }] = useDisclosure();
-
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  const [emoji, setEmoji] = useState<string>('👍');
 
   const createAnnotationMutation = useCreateAnnotation();
   const { data: annotationsData } = useAnnotations();
@@ -32,10 +32,10 @@ export const AppLayout = () => {
 
   const handleMapClick = (e: MapLayerMouseEvent) => {
     const newAnnotation = {
-      title: '👍',
+      title: emoji,
       latitude: e.lngLat.lat,
       longitude: e.lngLat.lng,
-      symbol: '👍',
+      symbol: emoji,
     };
     console.log(newAnnotation);
     createAnnotationMutation.mutate({
@@ -45,7 +45,7 @@ export const AppLayout = () => {
   };
 
   const handleEmojiClick = useCallback((emojiData: EmojiClickData, event: MouseEvent) => {
-    console.log(emojiData);
+    setEmoji(emojiData.emoji);
     event.preventDefault();
   }, []);
 
@@ -64,7 +64,7 @@ export const AppLayout = () => {
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Text>Logo</Text>
+          <Text size={'xl'}>{emoji} Moji Map</Text>
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
@@ -88,7 +88,9 @@ export const AppLayout = () => {
       <AppShell.Aside p="md">
         <EmojiPicker onEmojiClick={handleEmojiClick} />
       </AppShell.Aside>
-      <AppShell.Footer p="md">Footer</AppShell.Footer>
+      <AppShell.Footer p={'xs'}>
+        <Group justify={'flex-end'}>Guy Ettinger</Group>
+      </AppShell.Footer>
     </AppShell>
   );
 };
