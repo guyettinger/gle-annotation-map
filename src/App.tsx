@@ -3,6 +3,8 @@ import { AppShell, Box, Burger, Group, MantineProvider, Skeleton, Text } from '@
 import { useDisclosure } from '@mantine/hooks';
 import '@mantine/core/styles.css';
 import { Map } from './components';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import { useCallback } from 'react';
 
 const queryClient = new QueryClient();
 
@@ -10,10 +12,16 @@ const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
 const footerHeight = 60;
 const navbarWidth = 300;
-const asideWidth = 300;
+const asideWidth = 375;
 
 const App = () => {
   const [opened, { toggle }] = useDisclosure();
+
+  const handleEmojiClick = useCallback((emojiData: EmojiClickData, event: MouseEvent)=>{
+    console.log(emojiData);
+    event.preventDefault();
+  }, [])
+
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider>
@@ -53,7 +61,9 @@ const App = () => {
               <Map mapboxAccessToken={MAPBOX_ACCESS_TOKEN} />
             </Box>
           </AppShell.Main>
-          <AppShell.Aside p="md">Aside</AppShell.Aside>
+          <AppShell.Aside p="md">
+            <EmojiPicker onEmojiClick={handleEmojiClick} />
+          </AppShell.Aside>
           <AppShell.Footer p="md">Footer</AppShell.Footer>
         </AppShell>
       </MantineProvider>

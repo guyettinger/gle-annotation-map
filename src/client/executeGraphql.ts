@@ -21,5 +21,5 @@ export async function executeGraphql<TResult, TVariables>(
   }
 
   const json = await response.json();
-  return json as TResult;
+  return json?.data as TResult;
 }
