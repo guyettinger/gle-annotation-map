@@ -1,5 +1,5 @@
 import { Annotation } from '../../../graphql/client/graphql.ts';
 
-export interface AnnotationProps {
+export interface AnnotationMarkerProps {
   annotation: Annotation;
 }
