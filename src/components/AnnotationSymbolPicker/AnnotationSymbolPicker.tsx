@@ -23,7 +23,7 @@ export const AnnotationSymbolPicker = ({ symbol, onSymbolChange }: AnnotationSym
       onChange={setPopoverOpened}
     >
       <Popover.Target>
-        <Button size={'xl'} onClick={() => setPopoverOpened((o) => !o)} variant={'transparent'}>
+        <Button variant={'subtle'} size={'xl'} onClick={() => setPopoverOpened((o) => !o)}>
           <AnnotationSymbol symbol={symbol} />
         </Button>
       </Popover.Target>

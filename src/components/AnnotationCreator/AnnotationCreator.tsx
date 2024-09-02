@@ -49,10 +49,10 @@ export const AnnotationCreator = ({
         onSymbolChange={handleSymbolChange}
       />
       <Group>
-        <Button size={'compact-xs'} onClick={handleCreateClick}>
+        <Button variant={'subtle'} size={'compact-xs'} onClick={handleCreateClick}>
           Create
         </Button>
-        <Button size={'compact-xs'} onClick={handleCancelClick}>
+        <Button variant={'subtle'} size={'compact-xs'} onClick={handleCancelClick}>
           Cancel
         </Button>
       </Group>
