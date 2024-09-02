@@ -18,7 +18,7 @@ export const AnnotationMarker = ({
       longitude={annotation.longitude ?? 0}
       onClick={handleClick}
     >
-      <AnnotationSymbol annotation={annotation} />
+      <AnnotationSymbol symbol={annotation.symbol!} />
     </Marker>
   );
 };

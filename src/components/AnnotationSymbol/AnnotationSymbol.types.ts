@@ -1,5 +1,4 @@
-import { Annotation, AnnotationInput } from '../../../graphql/client/graphql.ts';
-
 export interface AnnotationSymbolProps {
-  annotation: Annotation | AnnotationInput;
+  symbol?: string;
+  size?: string;
 }

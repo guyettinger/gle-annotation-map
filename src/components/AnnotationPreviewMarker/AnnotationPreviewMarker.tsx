@@ -9,7 +9,7 @@ export const AnnotationPreviewMarker = ({ annotationInput }: AnnotationPreviewMa
       latitude={annotationInput.latitude!}
       longitude={annotationInput.longitude!}
     >
-      <AnnotationSymbol annotation={annotationInput} />
+      <AnnotationSymbol symbol={annotationInput.symbol!} />
     </Marker>
   );
 };
