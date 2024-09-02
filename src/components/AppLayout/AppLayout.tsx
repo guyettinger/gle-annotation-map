@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState, MouseEvent as ReactMouseEvent } from 'react';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import { useEffect, useState, MouseEvent as ReactMouseEvent } from 'react';
 import { MapLayerMouseEvent, Popup } from 'react-map-gl';
 import { ActionIcon, AppShell, Box, Burger, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import '@mantine/core/styles.css';
+import { IconX } from '@tabler/icons-react';
 import { Annotation, AnnotationInput } from '../../../graphql/client/graphql.ts';
 import { useCreateAnnotation } from '../../client/annotation/useCreateAnnotation.tsx';
 import { useAnnotations } from '../../client/annotation/useAnnotations.tsx';
@@ -11,10 +11,10 @@ import { AnnotationList } from '../AnnotationList';
 import { AnnotationMarker } from '../AnnotationMarker';
 import { Map } from '../Map';
 import { AnnotationItem } from '../AnnotationItem';
-import { IconX } from '@tabler/icons-react';
 import { useDeleteAnnotation } from '../../client/annotation/useDeleteAnnotation.tsx';
 import { AnnotationEditor } from '../AnnotationEditor';
 import { AnnotationCreator } from '../AnnotationCreator';
+import { AnnotationPreviewMarker } from '../AnnotationPreviewMarker';
 
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
@@ -50,24 +50,18 @@ export const AppLayout = () => {
 
   const handleMapClick = (e: MapLayerMouseEvent) => {
     console.log('handleMapClick', e);
-    const newAnnotation = {
+    const createAnnotationInput = {
       latitude: e.lngLat.lat,
       longitude: e.lngLat.lng,
       symbol: emoji,
       note: '',
     };
-    setCreateAnnotation(newAnnotation);
-    // createAnnotationMutation.mutate({
-    //   input: newAnnotation,
-    // });
+    setCreateAnnotation(createAnnotationInput);
   };
 
   const handleMarkerClick = (annotation: Annotation) => {
     console.log('handleMarkerClick', annotation);
     setEditAnnotation(annotation);
-    // createAnnotationMutation.mutate({
-    //   input: newAnnotation,
-    // });
   };
 
   const handleAnnotationItemDeleteClick = (annotation: Annotation, event: ReactMouseEvent) => {
@@ -76,11 +70,6 @@ export const AppLayout = () => {
     });
     event.stopPropagation();
   };
-
-  const handleEmojiClick = useCallback((emojiData: EmojiClickData, event: MouseEvent) => {
-    setEmoji(emojiData.emoji);
-    event.stopPropagation();
-  }, []);
 
   const handleRenderAnnotationItem = (annotation: Annotation) => {
     return (
@@ -101,9 +90,16 @@ export const AppLayout = () => {
   };
 
   const handleCreateAnnotation = (annotationInput: AnnotationInput) => {
+    // remember the last emoji used
+    const emoji = annotationInput.symbol ?? '👍';
+    setEmoji(emoji);
+
+    // create annotation
     createAnnotationMutation.mutate({
       input: annotationInput,
     });
+
+    // reset
     setCreateAnnotation(null);
   };
 
@@ -170,6 +166,7 @@ export const AppLayout = () => {
                     latitude={editAnnotation.latitude!}
                     longitude={editAnnotation.longitude!}
                     anchor="bottom"
+                    offset={10}
                     onClose={() => setEditAnnotation(null)}
                   >
                     <AnnotationEditor
@@ -187,6 +184,7 @@ export const AppLayout = () => {
                     latitude={createAnnotation.latitude!}
                     longitude={createAnnotation.longitude!}
                     anchor="bottom"
+                    offset={10}
                     onClose={() => setCreateAnnotation(null)}
                   >
                     <AnnotationCreator
@@ -194,6 +192,7 @@ export const AppLayout = () => {
                       onCreateAnnotation={handleCreateAnnotation}
                       onCancelCreateAnnotation={handleCancelCreateAnnotation}
                     />
+                    <AnnotationPreviewMarker annotationInput={createAnnotation} />
                   </Popup>
                 </>
               )}
@@ -201,9 +200,6 @@ export const AppLayout = () => {
           </Map>
         </Box>
       </AppShell.Main>
-      <AppShell.Aside p="md">
-        <EmojiPicker onEmojiClick={handleEmojiClick} />
-      </AppShell.Aside>
       <AppShell.Footer p={'xs'}>
         <Group justify={'flex-end'}>Guy Ettinger</Group>
       </AppShell.Footer>

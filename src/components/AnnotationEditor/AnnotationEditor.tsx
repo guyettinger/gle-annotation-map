@@ -23,8 +23,8 @@ export const AnnotationEditor = ({
         {annotation.symbol}
       </Text>
       <Group>
-        <Button onClick={handleEditClick}>Edit</Button>
-        <Button onClick={handleCancelClick}>Cancel</Button>
+        <Button size={'compact-xs'} onClick={handleEditClick}>Save</Button>
+        <Button size={'compact-xs'} onClick={handleCancelClick}>Cancel</Button>
       </Group>
     </Stack>
   );
