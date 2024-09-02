@@ -7,10 +7,11 @@ import { Annotation } from '../../../graphql/client/graphql.ts';
 export const AnnotationEditor = ({
   annotation,
   onEditAnnotation,
+  onEditAnnotationPreview,
   onCancelEditAnnotation,
 }: AnnotationEditorProps) => {
   const [editAnnotation, setEditAnnotation] = useState<Annotation>({
-    ...annotation
+    ...annotation,
   });
 
   const handleEditClick = useCallback(
@@ -31,10 +32,12 @@ export const AnnotationEditor = ({
 
   const handleSymbolChange = useCallback(
     (symbol: string) => {
-      setEditAnnotation({
+      const nextEditAnnotation = {
         ...editAnnotation,
         symbol: symbol,
-      });
+      };
+      onEditAnnotationPreview?.(nextEditAnnotation);
+      setEditAnnotation(nextEditAnnotation);
     },
     [editAnnotation],
   );

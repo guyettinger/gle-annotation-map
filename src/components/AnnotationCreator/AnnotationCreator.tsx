@@ -7,10 +7,11 @@ import { AnnotationInput } from '../../../graphql/client/graphql.ts';
 export const AnnotationCreator = ({
   annotationInput,
   onCreateAnnotation,
+  onCreateAnnotationPreview,
   onCancelCreateAnnotation,
 }: AnnotationCreatorProps) => {
   const [createAnnotationInput, setCreateAnnotationInput] = useState<AnnotationInput>({
-    ...annotationInput
+    ...annotationInput,
   });
 
   const handleCreateClick = useCallback(
@@ -31,10 +32,12 @@ export const AnnotationCreator = ({
 
   const handleSymbolChange = useCallback(
     (symbol: string) => {
-      setCreateAnnotationInput({
+      const nextCreateAnnotationInput = {
         ...createAnnotationInput,
         symbol: symbol,
-      });
+      };
+      onCreateAnnotationPreview?.(nextCreateAnnotationInput);
+      setCreateAnnotationInput(nextCreateAnnotationInput);
     },
     [createAnnotationInput],
   );

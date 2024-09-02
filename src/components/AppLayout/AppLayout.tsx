@@ -44,9 +44,9 @@ export const AppLayout = () => {
   const [createAnnotation, setCreateAnnotation] = useState<AnnotationInput | null>(null);
   const createAnnotationMutation = useCreateAnnotation();
 
-  // edit an annotation
-  const [editAnnotation, setEditAnnotation] = useState<Annotation | null>(null);
-  const updateAnnotation = useUpdateAnnotation();
+  // update an annotation
+  const [updateAnnotation, setUpdateAnnotation] = useState<Annotation | null>(null);
+  const updateAnnotationMutation = useUpdateAnnotation();
 
   // delete an annotation
   const deleteAnnotationMutation = useDeleteAnnotation();
@@ -62,7 +62,7 @@ export const AppLayout = () => {
   };
 
   const handleMarkerClick = (annotation: Annotation) => {
-    setEditAnnotation(annotation);
+    setUpdateAnnotation(annotation);
   };
 
   const handleAnnotationItemDeleteClick = (annotation: Annotation, event: ReactMouseEvent) => {
@@ -96,16 +96,16 @@ export const AppLayout = () => {
     setEmoji(emoji);
 
     // update annotation
-    updateAnnotation.mutate({
+    updateAnnotationMutation.mutate({
       input: annotation,
     });
 
     // reset
-    setEditAnnotation(null);
+    setUpdateAnnotation(null);
   };
 
   const handleCancelEditAnnotation = (_annotation: Annotation) => {
-    setEditAnnotation(null);
+    setUpdateAnnotation(null);
   };
 
   const handleRenderAnnotationItem = (annotation: Annotation) => {
@@ -167,22 +167,26 @@ export const AppLayout = () => {
                   onAnnotationMarkerClick={handleMarkerClick}
                 />
               ))}
-              {!!editAnnotation && (
+              {!!updateAnnotation && (
                 <>
                   <Popup
-                    key={editAnnotation.id}
-                    latitude={editAnnotation.latitude!}
-                    longitude={editAnnotation.longitude!}
+                    key={updateAnnotation.id}
+                    latitude={updateAnnotation.latitude!}
+                    longitude={updateAnnotation.longitude!}
                     anchor="bottom"
                     offset={10}
-                    onClose={() => setEditAnnotation(null)}
+                    onClose={() => setUpdateAnnotation(null)}
                   >
                     <AnnotationEditor
-                      annotation={editAnnotation}
+                      annotation={updateAnnotation}
                       onEditAnnotation={handleEditAnnotation}
+                      onEditAnnotationPreview={(nextAnnotation) => {
+                        setUpdateAnnotation(nextAnnotation);
+                      }}
                       onCancelEditAnnotation={handleCancelEditAnnotation}
                     />
                   </Popup>
+                  <AnnotationPreviewMarker annotationInput={updateAnnotation} />
                 </>
               )}
               {!!createAnnotation && (
@@ -199,9 +203,12 @@ export const AppLayout = () => {
                       annotationInput={createAnnotation}
                       onCreateAnnotation={handleCreateAnnotation}
                       onCancelCreateAnnotation={handleCancelCreateAnnotation}
+                      onCreateAnnotationPreview={(nextAnnotationInput) => {
+                        setCreateAnnotation(nextAnnotationInput);
+                      }}
                     />
-                    <AnnotationPreviewMarker annotationInput={createAnnotation} />
                   </Popup>
+                  <AnnotationPreviewMarker annotationInput={createAnnotation} />
                 </>
               )}
             </>
