@@ -171,8 +171,8 @@ export const AppLayout = () => {
                 <>
                   <Popup
                     key={updateAnnotation.id}
-                    latitude={updateAnnotation.latitude!}
-                    longitude={updateAnnotation.longitude!}
+                    latitude={updateAnnotation.latitude}
+                    longitude={updateAnnotation.longitude}
                     anchor="bottom"
                     offset={10}
                     onClose={() => setUpdateAnnotation(null)}
@@ -192,9 +192,9 @@ export const AppLayout = () => {
               {!!createAnnotation && (
                 <>
                   <Popup
-                    key={createAnnotation.latitude! + createAnnotation.longitude!}
-                    latitude={createAnnotation.latitude!}
-                    longitude={createAnnotation.longitude!}
+                    key={createAnnotation.latitude + createAnnotation.longitude}
+                    latitude={createAnnotation.latitude}
+                    longitude={createAnnotation.longitude}
                     anchor="bottom"
                     offset={10}
                     onClose={() => setCreateAnnotation(null)}

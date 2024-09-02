@@ -1,16 +1,16 @@
 input AnnotationInput {
   id: Int
-  latitude: Float
-  longitude: Float
-  symbol: String
+  latitude: Float!
+  longitude: Float!
+  symbol: String!
   note: String
 }
 
 type Annotation {
   id: Int!
-  latitude: Float
-  longitude: Float
-  symbol: String
+  latitude: Float!
+  longitude: Float!
+  symbol: String!
   note: String
 }
 

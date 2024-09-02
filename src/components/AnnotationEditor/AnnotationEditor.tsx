@@ -44,7 +44,7 @@ export const AnnotationEditor = ({
 
   return (
     <Stack>
-      <AnnotationSymbolPicker symbol={editAnnotation.symbol!} onSymbolChange={handleSymbolChange} />
+      <AnnotationSymbolPicker symbol={editAnnotation.symbol} onSymbolChange={handleSymbolChange} />
       <Group>
         <Button size={'compact-xs'} onClick={handleEditClick}>
           Save

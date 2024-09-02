@@ -14,11 +14,11 @@ export const AnnotationMarker = ({
   return (
     <Marker
       key={annotation.id}
-      latitude={annotation.latitude ?? 0}
-      longitude={annotation.longitude ?? 0}
+      latitude={annotation.latitude}
+      longitude={annotation.longitude}
       onClick={handleClick}
     >
-      <AnnotationSymbol symbol={annotation.symbol!} />
+      <AnnotationSymbol symbol={annotation.symbol} />
     </Marker>
   );
 };

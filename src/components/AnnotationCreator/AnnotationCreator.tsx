@@ -45,7 +45,7 @@ export const AnnotationCreator = ({
   return (
     <Stack>
       <AnnotationSymbolPicker
-        symbol={createAnnotationInput.symbol!}
+        symbol={createAnnotationInput.symbol}
         onSymbolChange={handleSymbolChange}
       />
       <Group>
