@@ -1,6 +1,6 @@
-import { Text } from '@mantine/core';
 import { Marker } from 'react-map-gl';
 import { AnnotationMarkerProps } from './AnnotationMarker.types.ts';
+import { AnnotationSymbol } from '../AnnotationSymbol';
 
 export const AnnotationMarker = ({
   annotation,
@@ -18,7 +18,7 @@ export const AnnotationMarker = ({
       longitude={annotation.longitude ?? 0}
       onClick={handleClick}
     >
-      <Text>{annotation.symbol}</Text>
+      <AnnotationSymbol annotation={annotation} />
     </Marker>
   );
 };

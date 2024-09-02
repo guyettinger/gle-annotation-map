@@ -15,19 +15,21 @@ import { useDeleteAnnotation } from '../../client/annotation/useDeleteAnnotation
 import { AnnotationEditor } from '../AnnotationEditor';
 import { AnnotationCreator } from '../AnnotationCreator';
 import { AnnotationPreviewMarker } from '../AnnotationPreviewMarker';
+import { useUpdateAnnotation } from '../../client/annotation/useUpdateAnnotation.tsx';
 
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
 const footerHeight = 40;
 const navbarWidth = 300;
 const asideWidth = 375;
+const defaultSymbol = '👍';
 
 export const AppLayout = () => {
   // app layout open
   const [opened, { toggle }] = useDisclosure();
 
   // selected emoji
-  const [emoji, setEmoji] = useState<string>('👍');
+  const [emoji, setEmoji] = useState<string>(defaultSymbol);
 
   // all annotations
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
@@ -44,6 +46,7 @@ export const AppLayout = () => {
 
   // edit an annotation
   const [editAnnotation, setEditAnnotation] = useState<Annotation | null>(null);
+  const updateAnnotation = useUpdateAnnotation();
 
   // delete an annotation
   const deleteAnnotationMutation = useDeleteAnnotation();
@@ -91,7 +94,7 @@ export const AppLayout = () => {
 
   const handleCreateAnnotation = (annotationInput: AnnotationInput) => {
     // remember the last emoji used
-    const emoji = annotationInput.symbol ?? '👍';
+    const emoji = annotationInput.symbol ?? defaultSymbol;
     setEmoji(emoji);
 
     // create annotation
@@ -109,7 +112,16 @@ export const AppLayout = () => {
   };
 
   const handleEditAnnotation = (annotation: Annotation) => {
-    console.log('handleEditAnnotation', annotation);
+    // remember the last emoji used
+    const emoji = annotation.symbol ?? defaultSymbol;
+    setEmoji(emoji);
+
+    // update annotation
+    updateAnnotation.mutate({
+      input: annotation,
+    });
+
+    // reset
     setEditAnnotation(null);
   };
 

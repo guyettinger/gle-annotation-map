@@ -8,7 +8,7 @@ export const updateAnnotation = (
 ) => {
   return context.prisma.annotation.update({
     where: {
-      id: args.id,
+      id: args.input?.id ?? -1,
     },
     data: {
       latitude: args.input?.latitude ?? 0.0,

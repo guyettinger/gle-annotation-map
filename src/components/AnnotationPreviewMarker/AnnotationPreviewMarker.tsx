@@ -1,6 +1,6 @@
-import { Text } from '@mantine/core';
 import { Marker } from 'react-map-gl';
 import { AnnotationPreviewMarkerProps } from './AnnotationPreviewMarker.types.ts';
+import { AnnotationSymbol } from '../AnnotationSymbol';
 
 export const AnnotationPreviewMarker = ({ annotationInput }: AnnotationPreviewMarkerProps) => {
   return (
@@ -9,7 +9,7 @@ export const AnnotationPreviewMarker = ({ annotationInput }: AnnotationPreviewMa
       latitude={annotationInput.latitude!}
       longitude={annotationInput.longitude!}
     >
-      <Text>{annotationInput.symbol}</Text>
+      <AnnotationSymbol annotation={annotationInput} />
     </Marker>
   );
 };
