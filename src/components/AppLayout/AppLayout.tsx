@@ -1,5 +1,5 @@
 import { useEffect, useState, MouseEvent as ReactMouseEvent } from 'react';
-import { MapLayerMouseEvent, Popup } from 'react-map-gl';
+import { MapLayerMouseEvent, Popup, useMap } from 'react-map-gl';
 import { ActionIcon, AppShell, Box, Burger, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import '@mantine/core/styles.css';
@@ -23,10 +23,14 @@ const footerHeight = 40;
 const navbarWidth = 300;
 const asideWidth = 375;
 const defaultSymbol = '👍';
+const mapId = 'annotationMap';
 
 export const AppLayout = () => {
   // app layout open
   const [opened, { toggle }] = useDisclosure();
+
+  // map
+  const {annotationMap} = useMap()
 
   // selected emoji
   const [emoji, setEmoji] = useState<string>(defaultSymbol);
@@ -108,11 +112,17 @@ export const AppLayout = () => {
     setUpdateAnnotation(null);
   };
 
+  const handleAnnotationItemClick = (annotation: Annotation) => {
+    if(!annotation) return;
+    annotationMap?.flyTo({center: [annotation.longitude, annotation.latitude]});
+  }
+
   const handleRenderAnnotationItem = (annotation: Annotation) => {
     return (
       <AnnotationItem
         key={annotation.id}
         annotation={annotation}
+        onAnnotationItemClick={handleAnnotationItemClick}
         actionArea={
           <ActionIcon
             variant="transparent"
@@ -158,7 +168,7 @@ export const AppLayout = () => {
         style={{ display: 'flex' }}
       >
         <Box style={{ flex: 1 }}>
-          <Map mapboxAccessToken={MAPBOX_ACCESS_TOKEN} onMapClick={handleMapClick}>
+          <Map mapId={mapId} mapboxAccessToken={MAPBOX_ACCESS_TOKEN} onMapClick={handleMapClick}>
             <>
               {annotations.map((annotation) => (
                 <AnnotationMarker

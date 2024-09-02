@@ -3,7 +3,7 @@ import { MapProps } from './Map.types.ts';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useCallback } from 'react';
 
-export const Map = ({ mapboxAccessToken, children, onMapClick }: MapProps) => {
+export const Map = ({ mapId, mapboxAccessToken, children, onMapClick }: MapProps) => {
   const handleMapClick = useCallback(
     (e: MapLayerMouseEvent) => {
       onMapClick?.(e);
@@ -13,6 +13,7 @@ export const Map = ({ mapboxAccessToken, children, onMapClick }: MapProps) => {
   return (
     <MapboxMap
       reuseMaps
+      id={mapId}
       mapboxAccessToken={mapboxAccessToken}
       initialViewState={{
         longitude: -122.4,
