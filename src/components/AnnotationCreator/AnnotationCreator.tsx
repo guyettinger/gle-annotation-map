@@ -2,41 +2,49 @@ import { MouseEvent as ReactMouseEvent, useCallback, useState } from 'react';
 import { Button, Group, Stack } from '@mantine/core';
 import { AnnotationCreatorProps } from './AnnotationCreator.types.ts';
 import { AnnotationSymbolPicker } from '../AnnotationSymbolPicker';
+import { AnnotationInput } from '../../../graphql/client/graphql.ts';
 
 export const AnnotationCreator = ({
   annotationInput,
   onCreateAnnotation,
   onCancelCreateAnnotation,
 }: AnnotationCreatorProps) => {
-  const [symbol, setSymbol] = useState(annotationInput.symbol ?? '');
+  const [createAnnotationInput, setCreateAnnotationInput] = useState<AnnotationInput>({
+    ...annotationInput
+  });
 
   const handleCreateClick = useCallback(
     (event: ReactMouseEvent) => {
-      onCreateAnnotation?.(annotationInput);
+      onCreateAnnotation?.(createAnnotationInput);
       event.stopPropagation();
     },
-    [onCreateAnnotation, annotationInput],
+    [onCreateAnnotation, createAnnotationInput],
   );
 
   const handleCancelClick = useCallback(
     (event: ReactMouseEvent) => {
-      onCancelCreateAnnotation?.(annotationInput);
+      onCancelCreateAnnotation?.(createAnnotationInput);
       event.stopPropagation();
     },
-    [onCancelCreateAnnotation, annotationInput],
+    [onCancelCreateAnnotation, createAnnotationInput],
   );
 
   const handleSymbolChange = useCallback(
     (symbol: string) => {
-      annotationInput.symbol = symbol;
-      setSymbol(symbol);
+      setCreateAnnotationInput({
+        ...createAnnotationInput,
+        symbol: symbol,
+      });
     },
-    [annotationInput],
+    [createAnnotationInput],
   );
 
   return (
     <Stack>
-      <AnnotationSymbolPicker symbol={symbol} onSymbolChange={handleSymbolChange} />
+      <AnnotationSymbolPicker
+        symbol={createAnnotationInput.symbol!}
+        onSymbolChange={handleSymbolChange}
+      />
       <Group>
         <Button size={'compact-xs'} onClick={handleCreateClick}>
           Create

@@ -52,7 +52,6 @@ export const AppLayout = () => {
   const deleteAnnotationMutation = useDeleteAnnotation();
 
   const handleMapClick = (e: MapLayerMouseEvent) => {
-    console.log('handleMapClick', e);
     const createAnnotationInput = {
       latitude: e.lngLat.lat,
       longitude: e.lngLat.lng,
@@ -63,7 +62,6 @@ export const AppLayout = () => {
   };
 
   const handleMarkerClick = (annotation: Annotation) => {
-    console.log('handleMarkerClick', annotation);
     setEditAnnotation(annotation);
   };
 
@@ -72,6 +70,42 @@ export const AppLayout = () => {
       id: annotation.id,
     });
     event.stopPropagation();
+  };
+
+  const handleCreateAnnotation = (annotationInput: AnnotationInput) => {
+    // remember the last emoji used
+    const emoji = annotationInput.symbol ?? defaultSymbol;
+    setEmoji(emoji);
+
+    // create annotation
+    createAnnotationMutation.mutate({
+      input: annotationInput,
+    });
+
+    // reset
+    setCreateAnnotation(null);
+  };
+
+  const handleCancelCreateAnnotation = (_annotationInput: AnnotationInput) => {
+    setCreateAnnotation(null);
+  };
+
+  const handleEditAnnotation = (annotation: Annotation) => {
+    // remember the last emoji used
+    const emoji = annotation.symbol ?? defaultSymbol;
+    setEmoji(emoji);
+
+    // update annotation
+    updateAnnotation.mutate({
+      input: annotation,
+    });
+
+    // reset
+    setEditAnnotation(null);
+  };
+
+  const handleCancelEditAnnotation = (_annotation: Annotation) => {
+    setEditAnnotation(null);
   };
 
   const handleRenderAnnotationItem = (annotation: Annotation) => {
@@ -90,44 +124,6 @@ export const AppLayout = () => {
         }
       />
     );
-  };
-
-  const handleCreateAnnotation = (annotationInput: AnnotationInput) => {
-    // remember the last emoji used
-    const emoji = annotationInput.symbol ?? defaultSymbol;
-    setEmoji(emoji);
-
-    // create annotation
-    createAnnotationMutation.mutate({
-      input: annotationInput,
-    });
-
-    // reset
-    setCreateAnnotation(null);
-  };
-
-  const handleCancelCreateAnnotation = (annotationInput: AnnotationInput) => {
-    console.log('handleCancelCreateAnnotation', annotationInput);
-    setCreateAnnotation(null);
-  };
-
-  const handleEditAnnotation = (annotation: Annotation) => {
-    // remember the last emoji used
-    const emoji = annotation.symbol ?? defaultSymbol;
-    setEmoji(emoji);
-
-    // update annotation
-    updateAnnotation.mutate({
-      input: annotation,
-    });
-
-    // reset
-    setEditAnnotation(null);
-  };
-
-  const handleCancelEditAnnotation = (annotation: Annotation) => {
-    console.log('handleCancelEditAnnotation', annotation);
-    setEditAnnotation(null);
   };
 
   return (

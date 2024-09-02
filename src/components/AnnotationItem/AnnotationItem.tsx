@@ -4,13 +4,11 @@ import { AnnotationSymbol } from '../AnnotationSymbol';
 
 export const AnnotationItem = ({ annotation, actionArea }: AnnotationItemProps) => {
   return (
-    <Card key={annotation.id}  shadow="sm" padding="lg" radius="md" withBorder >
+    <Card key={annotation.id} padding="sm" radius="sm" withBorder>
       <Stack>
         <Group justify="space-between" align="center">
           <AnnotationSymbol symbol={annotation.symbol!} />
-          {!!actionArea && (
-            actionArea
-          )}
+          {!!actionArea && actionArea}
         </Group>
         <Text size="xs">
           {annotation.latitude}, {annotation.longitude}
