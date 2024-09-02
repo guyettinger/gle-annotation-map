@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { MapLayerMouseEvent } from 'react-map-gl';
 
-export interface MapProps {
+export interface AnnotationMapProps {
   mapId: string;
   mapboxAccessToken: string;
   children: ReactNode;

@@ -6,4 +6,4 @@ export * from './AnnotationMarker';
 export * from './AnnotationPreviewMarker';
 export * from './AnnotationItem';
 export * from './AnnotationList';
-export * from './Map';
+export * from './AnnotationMap';

@@ -11,7 +11,7 @@ import { useUpdateAnnotation } from '../../client/annotation/useUpdateAnnotation
 import { useDeleteAnnotation } from '../../client/annotation/useDeleteAnnotation.tsx';
 import { AnnotationList } from '../AnnotationList';
 import { AnnotationMarker } from '../AnnotationMarker';
-import { Map } from '../Map';
+import { AnnotationMap } from '../AnnotationMap';
 import { AnnotationItem } from '../AnnotationItem';
 import { AnnotationEditor } from '../AnnotationEditor';
 import { AnnotationCreator } from '../AnnotationCreator';
@@ -177,7 +177,7 @@ export const AppLayout = () => {
         style={{ display: 'flex' }}
       >
         <Box style={{ flex: 1 }}>
-          <Map mapId={mapId} mapboxAccessToken={MAPBOX_ACCESS_TOKEN} onMapClick={handleMapClick}>
+          <AnnotationMap mapId={mapId} mapboxAccessToken={MAPBOX_ACCESS_TOKEN} onMapClick={handleMapClick}>
             <>
               {annotations.map((annotation) => (
                 <AnnotationMarker
@@ -231,7 +231,7 @@ export const AppLayout = () => {
                 </>
               )}
             </>
-          </Map>
+          </AnnotationMap>
         </Box>
       </AppShell.Main>
       <AppShell.Footer p={'xs'}>

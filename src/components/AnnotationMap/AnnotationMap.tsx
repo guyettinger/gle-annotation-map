@@ -1,9 +1,14 @@
-import { Map as MapboxMap, MapLayerMouseEvent } from 'react-map-gl';
-import { MapProps } from './Map.types.ts';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import { useCallback } from 'react';
+import { Map as MapboxMap, MapLayerMouseEvent } from 'react-map-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { AnnotationMapProps } from './AnnotationMap.types.ts';
 
-export const Map = ({ mapId, mapboxAccessToken, children, onMapClick }: MapProps) => {
+export const AnnotationMap = ({
+  children,
+  mapId,
+  mapboxAccessToken,
+  onMapClick,
+}: AnnotationMapProps) => {
   const handleMapClick = useCallback(
     (e: MapLayerMouseEvent) => {
       onMapClick?.(e);
