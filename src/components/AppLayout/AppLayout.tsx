@@ -55,7 +55,21 @@ export const AppLayout = () => {
   // delete an annotation
   const deleteAnnotationMutation = useDeleteAnnotation();
 
-  const handleMapClick = (e: MapLayerMouseEvent) => {
+  // annotation item handlers
+  const handleAnnotationItemClick = (annotation: Annotation) => {
+    if (!annotation) return;
+    annotationMap?.flyTo({ center: [annotation.longitude, annotation.latitude] });
+  };
+
+  const handleAnnotationItemDeleteClick = (annotation: Annotation, event: ReactMouseEvent) => {
+    deleteAnnotationMutation.mutate({
+      id: annotation.id,
+    });
+    event.stopPropagation();
+  };
+
+  // annotation map handlers
+  const handleAnnotationMapClick = (e: MapLayerMouseEvent) => {
     const createAnnotationInput = {
       latitude: e.lngLat.lat,
       longitude: e.lngLat.lng,
@@ -66,7 +80,6 @@ export const AppLayout = () => {
     const isControlKeyPressed = !!e.originalEvent?.metaKey || !!e.originalEvent?.ctrlKey;
     if (isControlKeyPressed) {
       // shortcut for quick create
-      console.log('shortcut');
       handleCreateAnnotation(createAnnotationInput);
     } else {
       // show create dialog
@@ -74,15 +87,8 @@ export const AppLayout = () => {
     }
   };
 
-  const handleMarkerClick = (annotation: Annotation) => {
+  const handleAnnotationMarkerClick = (annotation: Annotation) => {
     setUpdateAnnotation(annotation);
-  };
-
-  const handleAnnotationItemDeleteClick = (annotation: Annotation, event: ReactMouseEvent) => {
-    deleteAnnotationMutation.mutate({
-      id: annotation.id,
-    });
-    event.stopPropagation();
   };
 
   const handleCreateAnnotation = (annotationInput: AnnotationInput) => {
@@ -121,12 +127,7 @@ export const AppLayout = () => {
     setUpdateAnnotation(null);
   };
 
-  const handleAnnotationItemClick = (annotation: Annotation) => {
-    if (!annotation) return;
-    annotationMap?.flyTo({ center: [annotation.longitude, annotation.latitude] });
-  };
-
-  const handleRenderAnnotationItem = (annotation: Annotation) => {
+  const renderAnnotationItem = (annotation: Annotation) => {
     return (
       <AnnotationItem
         key={annotation.id}
@@ -164,10 +165,7 @@ export const AppLayout = () => {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        <AnnotationList
-          annotations={annotations}
-          renderAnnotationItem={handleRenderAnnotationItem}
-        />
+        <AnnotationList annotations={annotations} renderAnnotationItem={renderAnnotationItem} />
       </AppShell.Navbar>
       <AppShell.Main
         h="calc(100vh - var(--app-shell-header-height, 0px) - var(--app-shell-footer-height, 0px))"
@@ -177,13 +175,17 @@ export const AppLayout = () => {
         style={{ display: 'flex' }}
       >
         <Box style={{ flex: 1 }}>
-          <AnnotationMap mapId={mapId} mapboxAccessToken={MAPBOX_ACCESS_TOKEN} onMapClick={handleMapClick}>
+          <AnnotationMap
+            mapId={mapId}
+            mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
+            onMapClick={handleAnnotationMapClick}
+          >
             <>
               {annotations.map((annotation) => (
                 <AnnotationMarker
                   key={annotation.id}
                   annotation={annotation}
-                  onAnnotationMarkerClick={handleMarkerClick}
+                  onAnnotationMarkerClick={handleAnnotationMarkerClick}
                 />
               ))}
               {!!updateAnnotation && (
