@@ -30,7 +30,7 @@ export const AppLayout = () => {
   const [opened, { toggle }] = useDisclosure();
 
   // map
-  const {annotationMap} = useMap()
+  const { annotationMap } = useMap();
 
   // selected emoji
   const [emoji, setEmoji] = useState<string>(defaultSymbol);
@@ -62,7 +62,16 @@ export const AppLayout = () => {
       symbol: emoji,
       note: '',
     };
-    setCreateAnnotation(createAnnotationInput);
+
+    const isControlKeyPressed = !!e.originalEvent?.metaKey ?? !!e.originalEvent?.ctrlKey;
+    if (isControlKeyPressed) {
+      // shortcut for quick create
+      console.log("shortcut")
+      handleCreateAnnotation(createAnnotationInput);
+    } else {
+      // show create dialog
+      setCreateAnnotation(createAnnotationInput);
+    }
   };
 
   const handleMarkerClick = (annotation: Annotation) => {
@@ -113,9 +122,9 @@ export const AppLayout = () => {
   };
 
   const handleAnnotationItemClick = (annotation: Annotation) => {
-    if(!annotation) return;
-    annotationMap?.flyTo({center: [annotation.longitude, annotation.latitude]});
-  }
+    if (!annotation) return;
+    annotationMap?.flyTo({ center: [annotation.longitude, annotation.latitude] });
+  };
 
   const handleRenderAnnotationItem = (annotation: Annotation) => {
     return (
