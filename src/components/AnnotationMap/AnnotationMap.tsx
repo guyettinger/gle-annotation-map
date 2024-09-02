@@ -1,7 +1,17 @@
 import { useCallback } from 'react';
-import { Map as MapboxMap, MapLayerMouseEvent } from 'react-map-gl';
+import { Layer, Map as MapboxMap, MapLayerMouseEvent, SkyLayer } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { AnnotationMapProps } from './AnnotationMap.types.ts';
+
+const skyLayer: SkyLayer = {
+  id: 'sky',
+  type: 'sky',
+  paint: {
+    'sky-type': 'atmosphere',
+    'sky-atmosphere-sun': [0.0, 0.0],
+    'sky-atmosphere-sun-intensity': 7
+  }
+};
 
 export const AnnotationMap = ({
   children,
@@ -31,6 +41,7 @@ export const AnnotationMap = ({
       onClick={handleMapClick}
     >
       {children}
+      <Layer {...skyLayer} />
     </MapboxMap>
   );
 };
