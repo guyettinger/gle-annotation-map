@@ -5,17 +5,17 @@ import { useDisclosure } from '@mantine/hooks';
 import '@mantine/core/styles.css';
 import { IconX } from '@tabler/icons-react';
 import { Annotation, AnnotationInput } from '../../../graphql/client/graphql.ts';
-import { useCreateAnnotation } from '../../client/annotation/useCreateAnnotation.tsx';
 import { useAnnotations } from '../../client/annotation/useAnnotations.tsx';
+import { useCreateAnnotation } from '../../client/annotation/useCreateAnnotation.tsx';
+import { useUpdateAnnotation } from '../../client/annotation/useUpdateAnnotation.tsx';
+import { useDeleteAnnotation } from '../../client/annotation/useDeleteAnnotation.tsx';
 import { AnnotationList } from '../AnnotationList';
 import { AnnotationMarker } from '../AnnotationMarker';
 import { Map } from '../Map';
 import { AnnotationItem } from '../AnnotationItem';
-import { useDeleteAnnotation } from '../../client/annotation/useDeleteAnnotation.tsx';
 import { AnnotationEditor } from '../AnnotationEditor';
 import { AnnotationCreator } from '../AnnotationCreator';
 import { AnnotationPreviewMarker } from '../AnnotationPreviewMarker';
-import { useUpdateAnnotation } from '../../client/annotation/useUpdateAnnotation.tsx';
 
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
@@ -63,10 +63,10 @@ export const AppLayout = () => {
       note: '',
     };
 
-    const isControlKeyPressed = !!e.originalEvent?.metaKey ?? !!e.originalEvent?.ctrlKey;
+    const isControlKeyPressed = !!e.originalEvent?.metaKey || !!e.originalEvent?.ctrlKey;
     if (isControlKeyPressed) {
       // shortcut for quick create
-      console.log("shortcut")
+      console.log('shortcut');
       handleCreateAnnotation(createAnnotationInput);
     } else {
       // show create dialog
