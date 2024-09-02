@@ -1,11 +1,15 @@
 import { Map as MapboxMap, MapLayerMouseEvent } from 'react-map-gl';
 import { MapProps } from './Map.types.ts';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { useCallback } from 'react';
 
 export const Map = ({ mapboxAccessToken, children, onMapClick }: MapProps) => {
-  const handleMapClick = (e: MapLayerMouseEvent) => {
-    onMapClick?.(e);
-  };
+  const handleMapClick = useCallback(
+    (e: MapLayerMouseEvent) => {
+      onMapClick?.(e);
+    },
+    [onMapClick],
+  );
   return (
     <MapboxMap
       reuseMaps

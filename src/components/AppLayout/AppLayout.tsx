@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState, MouseEvent as ReactMouseEvent } from 'react';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
-import { MapLayerMouseEvent } from 'react-map-gl';
+import { MapLayerMouseEvent, Popup } from 'react-map-gl';
 import { ActionIcon, AppShell, Box, Burger, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import '@mantine/core/styles.css';
-import { Annotation } from '../../../graphql/client/graphql.ts';
+import { Annotation, AnnotationInput } from '../../../graphql/client/graphql.ts';
 import { useCreateAnnotation } from '../../client/annotation/useCreateAnnotation.tsx';
 import { useAnnotations } from '../../client/annotation/useAnnotations.tsx';
 import { AnnotationList } from '../AnnotationList';
@@ -13,6 +13,8 @@ import { Map } from '../Map';
 import { AnnotationItem } from '../AnnotationItem';
 import { IconX } from '@tabler/icons-react';
 import { useDeleteAnnotation } from '../../client/annotation/useDeleteAnnotation.tsx';
+import { AnnotationEditor } from '../AnnotationEditor';
+import { AnnotationCreator } from '../AnnotationCreator';
 
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
@@ -21,38 +23,59 @@ const navbarWidth = 300;
 const asideWidth = 375;
 
 export const AppLayout = () => {
+  // app layout open
   const [opened, { toggle }] = useDisclosure();
-  const [annotations, setAnnotations] = useState<Annotation[]>([]);
-  const [emoji, setEmoji] = useState<string>('👍');
-  const { data: annotationsData } = useAnnotations();
-  const createAnnotationMutation = useCreateAnnotation();
-  const deleteAnnotationMutation = useDeleteAnnotation();
 
+  // selected emoji
+  const [emoji, setEmoji] = useState<string>('👍');
+
+  // all annotations
+  const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  const { data: annotationsData } = useAnnotations();
   useEffect(() => {
     const annotations = annotationsData?.annotations?.filter((x) => !!x);
     if (!annotations) return;
     setAnnotations(annotations);
   }, [annotationsData]);
 
+  // create an annotation
+  const [createAnnotation, setCreateAnnotation] = useState<AnnotationInput | null>(null);
+  const createAnnotationMutation = useCreateAnnotation();
+
+  // edit an annotation
+  const [editAnnotation, setEditAnnotation] = useState<Annotation | null>(null);
+
+  // delete an annotation
+  const deleteAnnotationMutation = useDeleteAnnotation();
+
   const handleMapClick = (e: MapLayerMouseEvent) => {
+    console.log('handleMapClick', e);
     const newAnnotation = {
       latitude: e.lngLat.lat,
       longitude: e.lngLat.lng,
       symbol: emoji,
       note: '',
     };
-    createAnnotationMutation.mutate({
-      input: newAnnotation,
-    });
-    e.preventDefault();
+    setCreateAnnotation(newAnnotation);
+    // createAnnotationMutation.mutate({
+    //   input: newAnnotation,
+    // });
   };
 
-  const handleAnnotationItemDeleteClick = (annotation:Annotation, event:ReactMouseEvent) => {
+  const handleMarkerClick = (annotation: Annotation) => {
+    console.log('handleMarkerClick', annotation);
+    setEditAnnotation(annotation);
+    // createAnnotationMutation.mutate({
+    //   input: newAnnotation,
+    // });
+  };
+
+  const handleAnnotationItemDeleteClick = (annotation: Annotation, event: ReactMouseEvent) => {
     deleteAnnotationMutation.mutate({
-      id: annotation.id
-    })
+      id: annotation.id,
+    });
     event.stopPropagation();
-  }
+  };
 
   const handleEmojiClick = useCallback((emojiData: EmojiClickData, event: MouseEvent) => {
     setEmoji(emojiData.emoji);
@@ -70,11 +93,33 @@ export const AppLayout = () => {
             size="sm"
             onClick={(e) => handleAnnotationItemDeleteClick(annotation, e)}
           >
-            <IconX/>
+            <IconX />
           </ActionIcon>
         }
       />
     );
+  };
+
+  const handleCreateAnnotation = (annotationInput: AnnotationInput) => {
+    createAnnotationMutation.mutate({
+      input: annotationInput,
+    });
+    setCreateAnnotation(null);
+  };
+
+  const handleCancelCreateAnnotation = (annotationInput: AnnotationInput) => {
+    console.log('handleCancelCreateAnnotation', annotationInput);
+    setCreateAnnotation(null);
+  };
+
+  const handleEditAnnotation = (annotation: Annotation) => {
+    console.log('handleEditAnnotation', annotation);
+    setEditAnnotation(null);
+  };
+
+  const handleCancelEditAnnotation = (annotation: Annotation) => {
+    console.log('handleCancelEditAnnotation', annotation);
+    setEditAnnotation(null);
   };
 
   return (
@@ -110,9 +155,49 @@ export const AppLayout = () => {
       >
         <Box style={{ flex: 1 }}>
           <Map mapboxAccessToken={MAPBOX_ACCESS_TOKEN} onMapClick={handleMapClick}>
-            {annotations.map((annotation) => (
-              <AnnotationMarker key={annotation.id} annotation={annotation} />
-            ))}
+            <>
+              {annotations.map((annotation) => (
+                <AnnotationMarker
+                  key={annotation.id}
+                  annotation={annotation}
+                  onAnnotationMarkerClick={handleMarkerClick}
+                />
+              ))}
+              {!!editAnnotation && (
+                <>
+                  <Popup
+                    key={editAnnotation.id}
+                    latitude={editAnnotation.latitude!}
+                    longitude={editAnnotation.longitude!}
+                    anchor="bottom"
+                    onClose={() => setEditAnnotation(null)}
+                  >
+                    <AnnotationEditor
+                      annotation={editAnnotation}
+                      onEditAnnotation={handleEditAnnotation}
+                      onCancelEditAnnotation={handleCancelEditAnnotation}
+                    />
+                  </Popup>
+                </>
+              )}
+              {!!createAnnotation && (
+                <>
+                  <Popup
+                    key={createAnnotation.latitude! + createAnnotation.longitude!}
+                    latitude={createAnnotation.latitude!}
+                    longitude={createAnnotation.longitude!}
+                    anchor="bottom"
+                    onClose={() => setCreateAnnotation(null)}
+                  >
+                    <AnnotationCreator
+                      annotationInput={createAnnotation}
+                      onCreateAnnotation={handleCreateAnnotation}
+                      onCancelCreateAnnotation={handleCancelCreateAnnotation}
+                    />
+                  </Popup>
+                </>
+              )}
+            </>
           </Map>
         </Box>
       </AppShell.Main>

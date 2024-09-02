@@ -1,15 +1,24 @@
 import { Text } from '@mantine/core';
+import { Marker } from 'react-map-gl';
 import { AnnotationMarkerProps } from './AnnotationMarker.types.ts';
-import { Marker as MapboxMarker } from 'react-map-gl';
 
-export const AnnotationMarker = ({ annotation }: AnnotationMarkerProps) => {
+export const AnnotationMarker = ({
+  annotation,
+  onAnnotationMarkerClick,
+}: AnnotationMarkerProps) => {
+  const handleClick = (event: any) => {
+    onAnnotationMarkerClick?.(annotation);
+    event?.originalEvent?.stopPropagation();
+  };
+
   return (
-    <MapboxMarker
+    <Marker
       key={annotation.id}
       latitude={annotation.latitude ?? 0}
       longitude={annotation.longitude ?? 0}
+      onClick={handleClick}
     >
       <Text>{annotation.symbol}</Text>
-    </MapboxMarker>
+    </Marker>
   );
 };
