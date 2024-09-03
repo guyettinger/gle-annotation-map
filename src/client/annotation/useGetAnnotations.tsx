@@ -7,20 +7,20 @@ const annotationsQuery = graphql(/* GraphQL */ `
   query getAnnotations($input: GetAnnotationsInput!) {
     getAnnotations(input: $input) {
       annotations {
-          id
-          latitude
-          longitude
-          symbol
-          note
+        id
+        latitude
+        longitude
+        symbol
+        note
       }
-        count
+      count
     }
   }
 `);
 
-export const useGetAnnotations = (getAnnotationsQueryVariables:GetAnnotationsQueryVariables) => {
+export const useGetAnnotations = (getAnnotationsQueryVariables: GetAnnotationsQueryVariables) => {
   return useQuery({
-    queryKey: ['annotations'],
+    queryKey: ['annotations', getAnnotationsQueryVariables.input?.filter],
     queryFn: () => executeGraphql(annotationsQuery, getAnnotationsQueryVariables),
   });
 };

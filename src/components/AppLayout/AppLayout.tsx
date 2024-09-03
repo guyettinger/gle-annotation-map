@@ -16,6 +16,7 @@ import { AnnotationItem } from '../AnnotationItem';
 import { AnnotationEditor } from '../AnnotationEditor';
 import { AnnotationCreator } from '../AnnotationCreator';
 import { AnnotationPreviewMarker } from '../AnnotationPreviewMarker';
+import { AnnotationFilterExpression } from '../AnnotationFilterExpression';
 
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
@@ -60,6 +61,11 @@ export const AppLayout = () => {
 
   // delete an annotation
   const deleteAnnotationMutation = useDeleteAnnotation();
+
+
+  const handleOnQueryVariablesChange = (queryVariables:GetAnnotationsQueryVariables) => {
+    setGetAnnotationsVariables(queryVariables);
+  }
 
   // annotation item handlers
   const handleAnnotationItemClick = (annotation: Annotation) => {
@@ -171,6 +177,7 @@ export const AppLayout = () => {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
+        <AnnotationFilterExpression queryVariables={getAnnotationsVariables} onQueryVariablesChange={handleOnQueryVariablesChange}/>
         <AnnotationList annotations={annotations} renderAnnotationItem={renderAnnotationItem} />
       </AppShell.Navbar>
       <AppShell.Main

@@ -17,8 +17,8 @@ export const useUpdateAnnotation = () => {
   return useMutation({
     mutationFn: (variables: MutationUpdateAnnotationArgs) =>
       executeGraphql(updateAnnotationMutation, variables),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['annotations'] });
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['annotations', variables?.input?.id] });
     },
   });
 };
