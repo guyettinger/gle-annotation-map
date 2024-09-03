@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Layer, Map as MapboxMap, MapLayerMouseEvent, SkyLayer } from 'react-map-gl';
+import { GeolocateControl, Layer, Map as MapboxMap, MapLayerMouseEvent, SkyLayer } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { AnnotationMapProps } from './AnnotationMap.types.ts';
 
@@ -40,6 +40,7 @@ export const AnnotationMap = ({
       mapStyle="mapbox://styles/mapbox/streets-v9"
       onClick={handleMapClick}
     >
+      <GeolocateControl />
       {children}
       <Layer {...skyLayer} />
     </MapboxMap>
