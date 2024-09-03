@@ -4,8 +4,8 @@ import { ActionIcon, AppShell, Box, Burger, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import '@mantine/core/styles.css';
 import { IconX } from '@tabler/icons-react';
-import { Annotation, AnnotationInput } from '../../../graphql/client/graphql.ts';
-import { useAnnotations } from '../../client/annotation/useAnnotations.tsx';
+import { Annotation, AnnotationInput, GetAnnotationsQueryVariables } from '../../../graphql/client/graphql.ts';
+import { useGetAnnotations } from '../../client/annotation/useGetAnnotations.tsx';
 import { useCreateAnnotation } from '../../client/annotation/useCreateAnnotation.tsx';
 import { useUpdateAnnotation } from '../../client/annotation/useUpdateAnnotation.tsx';
 import { useDeleteAnnotation } from '../../client/annotation/useDeleteAnnotation.tsx';
@@ -37,9 +37,15 @@ export const AppLayout = () => {
 
   // all annotations
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
-  const { data: annotationsData } = useAnnotations();
+  const [getAnnotationsVariables, setGetAnnotationsVariables] = useState<GetAnnotationsQueryVariables>({
+    input: {
+      filter: undefined,
+      take: 1000
+    }
+  });
+  const { data: annotationsData } = useGetAnnotations(getAnnotationsVariables);
   useEffect(() => {
-    const annotations = annotationsData?.annotations?.filter((x) => !!x);
+    const annotations = annotationsData?.getAnnotations?.annotations?.filter((x) => !!x);
     if (!annotations) return;
     setAnnotations(annotations);
   }, [annotationsData]);

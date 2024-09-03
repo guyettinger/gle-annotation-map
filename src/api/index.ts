@@ -16,7 +16,7 @@ const api = express();
 const typeDefs = readFileSync('./graphql/schema.graphql', 'utf8');
 const resolvers: Resolvers = {
   Query: {
-    annotations: getAnnotations,
+    getAnnotations,
     getAnnotation,
   },
   Mutation: {
