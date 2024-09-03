@@ -4,7 +4,12 @@ import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { AnnotationSymbolPickerProps } from './AnnotationSymbolPicker.types.ts';
 import { AnnotationSymbol } from '../AnnotationSymbol';
 
-export const AnnotationSymbolPicker = ({ symbol, onSymbolChange }: AnnotationSymbolPickerProps) => {
+export const AnnotationSymbolPicker = ({
+  symbol,
+  onSymbolChange,
+  size = 'xl',
+  ...buttonProps
+}: AnnotationSymbolPickerProps) => {
   const [popoverOpened, setPopoverOpened] = useState(false);
 
   const handleEmojiClick = useCallback((emojiData: EmojiClickData, event: MouseEvent) => {
@@ -23,7 +28,13 @@ export const AnnotationSymbolPicker = ({ symbol, onSymbolChange }: AnnotationSym
       onChange={setPopoverOpened}
     >
       <Popover.Target>
-        <Button variant={'subtle'} size={'xl'} onClick={() => setPopoverOpened((o) => !o)}>
+        <Button
+          variant={'subtle'}
+          size={size}
+          w={'auto'}
+          onClick={() => setPopoverOpened((o) => !o)}
+          {...buttonProps}
+        >
           <AnnotationSymbol symbol={symbol} />
         </Button>
       </Popover.Target>

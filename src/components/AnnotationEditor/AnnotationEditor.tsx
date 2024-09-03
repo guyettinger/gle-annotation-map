@@ -46,10 +46,10 @@ export const AnnotationEditor = ({
     <Stack>
       <AnnotationSymbolPicker symbol={editAnnotation.symbol} onSymbolChange={handleSymbolChange} />
       <Group>
-        <Button size={'compact-xs'} onClick={handleEditClick}>
+        <Button variant={'subtle'} size={'compact-xs'} onClick={handleEditClick}>
           Save
         </Button>
-        <Button size={'compact-xs'} onClick={handleCancelClick}>
+        <Button variant={'subtle'} size={'compact-xs'} onClick={handleCancelClick}>
           Cancel
         </Button>
       </Group>

@@ -10,8 +10,8 @@ export const AnnotationList = ({
   },
 }: AnnotationListProps) => {
   return (
-    <ScrollArea.Autosize offsetScrollbars={true} scrollbarSize={4}>
-      <Stack>
+    <ScrollArea.Autosize offsetScrollbars={true} scrollbarSize={4} m={0}>
+      <Stack m={10}>
         {annotations.map((annotation) => {
           return renderAnnotationItem(annotation);
         })}

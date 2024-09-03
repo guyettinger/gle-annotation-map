@@ -1,6 +1,6 @@
 import { useEffect, useState, MouseEvent as ReactMouseEvent } from 'react';
 import { MapLayerMouseEvent, Popup, useMap } from 'react-map-gl';
-import { ActionIcon, AppShell, Box, Burger, Group, Text } from '@mantine/core';
+import { ActionIcon, AppShell, Box, Burger, Group, Divider, Text, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import '@mantine/core/styles.css';
 import { IconX } from '@tabler/icons-react';
@@ -176,8 +176,11 @@ export const AppLayout = () => {
           <Text size={'xl'}>{emoji} Moji Map</Text>
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar p="md">
-        <AnnotationFilterExpression queryVariables={getAnnotationsVariables} onQueryVariablesChange={handleOnQueryVariablesChange}/>
+      <AppShell.Navbar>
+        <Stack p={'sm'}>
+          <AnnotationFilterExpression queryVariables={getAnnotationsVariables} onQueryVariablesChange={handleOnQueryVariablesChange}/>
+        </Stack>
+        <Divider />
         <AnnotationList annotations={annotations} renderAnnotationItem={renderAnnotationItem} />
       </AppShell.Navbar>
       <AppShell.Main

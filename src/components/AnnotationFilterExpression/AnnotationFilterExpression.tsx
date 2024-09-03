@@ -1,11 +1,16 @@
-import { Stack } from '@mantine/core';
+import { useCallback, useState, MouseEvent } from 'react';
+import { ActionIcon, Group, Paper } from '@mantine/core';
+import { IconFilterCancel, IconFilterSearch } from '@tabler/icons-react';
 import { AnnotationFilterExpressionProps } from './AnnotationFilterExpression.types.ts';
 import { GetAnnotationsQueryVariables } from '../../../graphql/client/graphql.ts';
-import { useCallback, useState } from 'react';
 import { AnnotationSymbolPicker } from '../AnnotationSymbolPicker';
 
-export const AnnotationFilterExpression = ({queryVariables, onQueryVariablesChange}: AnnotationFilterExpressionProps) => {
-  const [getAnnotationsQueryVariables, setGetAnnotationsQueryVariables] = useState<GetAnnotationsQueryVariables>({...queryVariables});
+export const AnnotationFilterExpression = ({
+  queryVariables,
+  onQueryVariablesChange,
+}: AnnotationFilterExpressionProps) => {
+  const [getAnnotationsQueryVariables, setGetAnnotationsQueryVariables] =
+    useState<GetAnnotationsQueryVariables>({ ...queryVariables });
 
   const handleSymbolChange = useCallback(
     (symbol: string) => {
@@ -14,15 +19,44 @@ export const AnnotationFilterExpression = ({queryVariables, onQueryVariablesChan
         input: {
           ...getAnnotationsQueryVariables.input,
           filter: symbol,
-        }
-      }
-      console.log("onQueryVariablesChange", nextGetAnnotationsQueryVariables);
+        },
+      };
       onQueryVariablesChange?.(nextGetAnnotationsQueryVariables);
-      setGetAnnotationsQueryVariables(nextGetAnnotationsQueryVariables)
+      setGetAnnotationsQueryVariables(nextGetAnnotationsQueryVariables);
     },
     [onQueryVariablesChange, getAnnotationsQueryVariables],
   );
 
-  return <Stack>
-    <AnnotationSymbolPicker symbol={getAnnotationsQueryVariables.input?.filter ?? ""} onSymbolChange={handleSymbolChange} /></Stack>;
+  const handleClearClick = (event: MouseEvent) => {
+    const nextGetAnnotationsQueryVariables = {
+      ...getAnnotationsQueryVariables,
+      input: {
+        ...getAnnotationsQueryVariables.input,
+        filter: undefined,
+      },
+    };
+    onQueryVariablesChange?.(nextGetAnnotationsQueryVariables);
+    setGetAnnotationsQueryVariables(nextGetAnnotationsQueryVariables);
+    event.stopPropagation();
+  };
+
+  return (
+    <Paper shadow="xs" radius="xl" withBorder p="sm">
+      <Group justify={'space-between'}>
+        <Group>
+          <IconFilterSearch size={20} />
+          <AnnotationSymbolPicker
+            size={'xs'}
+            symbol={getAnnotationsQueryVariables.input?.filter ?? ''}
+            onSymbolChange={handleSymbolChange}
+          />
+        </Group>
+        <Group>
+          <ActionIcon variant="transparent" size="sm" onClick={handleClearClick}>
+            <IconFilterCancel size={20} />
+          </ActionIcon>
+        </Group>
+      </Group>
+    </Paper>
+  );
 };
