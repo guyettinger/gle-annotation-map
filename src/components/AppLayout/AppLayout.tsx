@@ -29,6 +29,7 @@ const navbarWidth = 300;
 const asideWidth = 375;
 const defaultSymbol = '👍';
 const mapId = 'annotationMap';
+const annotationBatchSize = 100;
 
 export const AppLayout = () => {
   // app layout open
@@ -40,21 +41,48 @@ export const AppLayout = () => {
   // selected emoji
   const [emoji, setEmoji] = useState<string>(defaultSymbol);
 
-  // all annotations
-  const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  // get annotations query params
   const [getAnnotationsVariables, setGetAnnotationsVariables] =
     useState<GetAnnotationsQueryVariables>({
       input: {
         filter: undefined,
-        take: 1000,
+        take: annotationBatchSize,
+        skip: 0,
       },
     });
-  const { data: annotationsData } = useGetAnnotations(getAnnotationsVariables);
+
+  // get annotations query
+  const {
+    data: annotationsData,
+    isFetching,
+    fetchNextPage,
+  } = useGetAnnotations({ variables: getAnnotationsVariables });
+
+  // annotation data
+  const [annotations, setAnnotations] = useState<Annotation[]>([]);
+
   useEffect(() => {
-    const annotations = annotationsData?.getAnnotations?.annotations?.filter((x) => !!x);
-    if (!annotations) return;
-    setAnnotations(annotations);
-  }, [annotationsData]);
+    // if not fetching
+    if (isFetching) return;
+
+    // if there are pages
+    const pages = annotationsData?.pages;
+    if (!pages || pages.length === 0) return;
+
+    // get annotations
+    const nextAnnotations = pages
+      ? pages.flatMap((page) => page.getAnnotations?.annotations ?? [])?.filter((x) => !!x)
+      : [];
+
+    // update new annotations
+    setAnnotations(nextAnnotations);
+
+    // fetch next page
+    const lastPage = pages[pages.length - 1];
+    const count = lastPage.getAnnotations?.count ?? 0;
+    if (count <= nextAnnotations.length) return;
+    fetchNextPage();
+  }, [annotationsData, isFetching, fetchNextPage, annotations]);
 
   // create an annotation
   const [createAnnotation, setCreateAnnotation] = useState<AnnotationInput | null>(null);
