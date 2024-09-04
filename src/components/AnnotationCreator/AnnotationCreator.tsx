@@ -1,5 +1,5 @@
-import { MouseEvent as ReactMouseEvent, useCallback, useState } from 'react';
-import { Button, Group, Stack } from '@mantine/core';
+import { ChangeEvent, MouseEvent as ReactMouseEvent, useCallback, useState } from 'react';
+import { Button, Group, Stack, Textarea } from '@mantine/core';
 import { AnnotationCreatorProps } from './AnnotationCreator.types.ts';
 import { AnnotationSymbolPicker } from '../AnnotationSymbolPicker';
 import { AnnotationInput } from '../../../graphql/client/graphql.ts';
@@ -42,13 +42,30 @@ export const AnnotationCreator = ({
     [createAnnotationInput],
   );
 
+  const handleTextChange = useCallback((event: ChangeEvent<HTMLTextAreaElement>)=>{
+    const nextCreateAnnotationInput = {
+      ...createAnnotationInput,
+      note: event.target.value,
+    };
+    onCreateAnnotationPreview?.(nextCreateAnnotationInput);
+    setCreateAnnotationInput(nextCreateAnnotationInput);
+  }, [createAnnotationInput]);
+
   return (
-    <Stack>
+    <Stack gap="xs">
       <AnnotationSymbolPicker
+        variant={'light'}
         symbol={createAnnotationInput.symbol}
         onSymbolChange={handleSymbolChange}
       />
-      <Group>
+      <Textarea
+        placeholder="notes"
+        autosize
+        minRows={2}
+        value={createAnnotationInput.note ?? ""}
+        onChange={handleTextChange}
+      />
+      <Group justify={"space-between"}>
         <Button variant={'subtle'} size={'compact-xs'} onClick={handleCreateClick}>
           Create
         </Button>

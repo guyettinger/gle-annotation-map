@@ -19,11 +19,12 @@ export const AnnotationItem = ({
   return (
     <Card key={annotation.id} padding="sm" radius="sm" withBorder onClick={handleCardClick}>
       <Stack>
-        <Group justify="space-between" align="center">
+        <Group justify="space-between">
           <AnnotationSymbol symbol={annotation.symbol} />
           {!!actionArea && actionArea}
         </Group>
-        <Text size="xs">
+        {annotation.note && <Text size="xs">{annotation.note}</Text>}
+        <Text size="xs" opacity={0.5}>
           {annotation.latitude}, {annotation.longitude}
         </Text>
       </Stack>

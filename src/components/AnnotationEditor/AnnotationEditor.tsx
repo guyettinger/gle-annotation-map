@@ -1,5 +1,5 @@
-import { MouseEvent, useCallback, useState } from 'react';
-import { Button, Group, Stack } from '@mantine/core';
+import { ChangeEvent, MouseEvent, useCallback, useState } from 'react';
+import { Button, Group, Stack, Textarea } from '@mantine/core';
 import { AnnotationEditorProps } from './AnnotationEditor.types.ts';
 import { AnnotationSymbolPicker } from '../AnnotationSymbolPicker';
 import { Annotation } from '../../../graphql/client/graphql.ts';
@@ -42,10 +42,33 @@ export const AnnotationEditor = ({
     [editAnnotation],
   );
 
+  const handleTextChange = useCallback(
+    (event: ChangeEvent<HTMLTextAreaElement>) => {
+      const nextEditAnnotation = {
+        ...editAnnotation,
+        note: event.target.value,
+      };
+      onEditAnnotationPreview?.(nextEditAnnotation);
+      setEditAnnotation(nextEditAnnotation);
+    },
+    [editAnnotation],
+  );
+
   return (
-    <Stack>
-      <AnnotationSymbolPicker symbol={editAnnotation.symbol} onSymbolChange={handleSymbolChange} />
-      <Group>
+    <Stack gap="xs">
+      <AnnotationSymbolPicker
+        variant={'light'}
+        symbol={editAnnotation.symbol}
+        onSymbolChange={handleSymbolChange}
+      />
+      <Textarea
+        placeholder="notes"
+        autosize
+        minRows={2}
+        value={editAnnotation.note ?? ''}
+        onChange={handleTextChange}
+      />
+      <Group justify={"space-between"}>
         <Button variant={'subtle'} size={'compact-xs'} onClick={handleEditClick}>
           Save
         </Button>
