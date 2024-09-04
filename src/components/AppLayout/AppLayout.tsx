@@ -38,8 +38,8 @@ export const AppLayout = () => {
   // map
   const { annotationMap } = useMap();
 
-  // selected emoji
-  const [emoji, setEmoji] = useState<string>(defaultSymbol);
+  // symbol
+  const [symbol, setSymbol] = useState<string>(defaultSymbol);
 
   // get annotations query params
   const [getAnnotationsVariables, setGetAnnotationsVariables] =
@@ -117,7 +117,7 @@ export const AppLayout = () => {
     const createAnnotationInput = {
       latitude: e.lngLat.lat,
       longitude: e.lngLat.lng,
-      symbol: emoji,
+      symbol: symbol,
       note: '',
     };
 
@@ -136,9 +136,9 @@ export const AppLayout = () => {
   };
 
   const handleCreateAnnotation = (annotationInput: AnnotationInput) => {
-    // remember the last emoji used
-    const emoji = annotationInput.symbol ?? defaultSymbol;
-    setEmoji(emoji);
+    // remember the last symbol used
+    const symbol = annotationInput.symbol ?? defaultSymbol;
+    setSymbol(symbol);
 
     // create annotation
     createAnnotationMutation.mutate({
@@ -154,9 +154,9 @@ export const AppLayout = () => {
   };
 
   const handleEditAnnotation = (annotation: Annotation) => {
-    // remember the last emoji used
-    const emoji = annotation.symbol ?? defaultSymbol;
-    setEmoji(emoji);
+    // remember the last symbol used
+    const symbol = annotation.symbol ?? defaultSymbol;
+    setSymbol(symbol);
 
     // update annotation
     updateAnnotationMutation.mutate({
@@ -205,7 +205,7 @@ export const AppLayout = () => {
       <AppShell.Header>
         <Group h="100%" px="sm">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Text size={'32px'}>{emoji}</Text>
+          <Text size={'32px'}>{symbol}</Text>
           <Text size={'xl'}>Moji Map</Text>
         </Group>
       </AppShell.Header>
