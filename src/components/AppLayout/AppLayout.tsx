@@ -1,6 +1,17 @@
 import { useEffect, useState, MouseEvent as ReactMouseEvent } from 'react';
 import { MapLayerMouseEvent, Popup, useMap } from 'react-map-gl';
-import { ActionIcon, AppShell, Box, Burger, Group, Divider, Text, Stack } from '@mantine/core';
+import {
+  ActionIcon,
+  AppShell,
+  Box,
+  Burger,
+  Divider,
+  Group,
+  Image,
+  Text,
+  Stack,
+  Anchor,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import '@mantine/core/styles.css';
 import { IconX } from '@tabler/icons-react';
@@ -211,7 +222,7 @@ export const AppLayout = () => {
             <Text size={'xl'}>Moji Map</Text>
           </Group>
           <Group>
-            <AppHelp/>
+            <AppHelp />
           </Group>
         </Group>
       </AppShell.Header>
@@ -294,8 +305,15 @@ export const AppLayout = () => {
           </AnnotationMap>
         </Box>
       </AppShell.Main>
-      <AppShell.Footer p={'xs'}>
-        <Group justify={'flex-end'}>Guy Ettinger</Group>
+      <AppShell.Footer p={0}>
+        <Stack justify={'center'} p={5}>
+          <Anchor href='https://guyettinger.vercel.app/' target='_blank'>
+            <Group justify={'flex-end'} align={'center'} gap={0}>
+              <Text size={'xs'} style={{color: 'black'}}>created by</Text>
+              <Image w={'30px'} h={'30px'} src={'logo.png'} />
+            </Group>
+          </Anchor>
+        </Stack>
       </AppShell.Footer>
     </AppShell>
   );
