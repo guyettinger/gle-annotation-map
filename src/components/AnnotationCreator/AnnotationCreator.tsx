@@ -54,6 +54,7 @@ export const AnnotationCreator = ({
   return (
     <Stack gap="xs">
       <AnnotationSymbolPicker
+        symbolSize={'40px'}
         variant={'light'}
         symbol={createAnnotationInput.symbol}
         onSymbolChange={handleSymbolChange}

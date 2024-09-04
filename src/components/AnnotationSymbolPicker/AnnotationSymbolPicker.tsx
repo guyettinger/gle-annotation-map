@@ -6,6 +6,7 @@ import { AnnotationSymbol } from '../AnnotationSymbol';
 
 export const AnnotationSymbolPicker = ({
   symbol,
+  symbolSize = '24px',
   onSymbolChange,
   size = 'xl',
   ...buttonProps
@@ -35,7 +36,7 @@ export const AnnotationSymbolPicker = ({
           onClick={() => setPopoverOpened((o) => !o)}
           {...buttonProps}
         >
-          <AnnotationSymbol symbol={symbol} />
+          <AnnotationSymbol size={symbolSize} symbol={symbol} />
         </Button>
       </Popover.Target>
       <Popover.Dropdown>
