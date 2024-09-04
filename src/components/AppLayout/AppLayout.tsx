@@ -21,6 +21,7 @@ import { AnnotationEditor } from '../AnnotationEditor';
 import { AnnotationCreator } from '../AnnotationCreator';
 import { AnnotationPreviewMarker } from '../AnnotationPreviewMarker';
 import { AnnotationFilterExpression } from '../AnnotationFilterExpression';
+import { AppHelp } from '../AppHelp';
 
 const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const headerHeight = 60;
@@ -203,10 +204,15 @@ export const AppLayout = () => {
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="sm">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Text size={'32px'}>{symbol}</Text>
-          <Text size={'xl'}>Moji Map</Text>
+        <Group h="100%" px="sm" justify="space-between">
+          <Group>
+            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <Text size={'32px'}>{symbol}</Text>
+            <Text size={'xl'}>Moji Map</Text>
+          </Group>
+          <Group>
+            <AppHelp/>
+          </Group>
         </Group>
       </AppShell.Header>
       <AppShell.Navbar>
