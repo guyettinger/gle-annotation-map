@@ -16,8 +16,8 @@ export const useDeleteAnnotation = () => {
 
   return useMutation({
     mutationFn: (variables: MutationDeleteAnnotationArgs) => executeGraphql(deleteAnnotationMutation, variables),
-    onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['annotations', variables.id] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['annotations'] });
     },
   });
 };

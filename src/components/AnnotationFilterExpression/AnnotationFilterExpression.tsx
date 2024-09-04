@@ -1,6 +1,6 @@
 import { useCallback, useState, MouseEvent } from 'react';
-import { ActionIcon, Group, Paper } from '@mantine/core';
-import { IconFilterCancel, IconFilterSearch } from '@tabler/icons-react';
+import { ActionIcon, Group, Paper, Text } from '@mantine/core';
+import { IconSquareRoundedXFilled } from '@tabler/icons-react';
 import { AnnotationFilterExpressionProps } from './AnnotationFilterExpression.types.ts';
 import { GetAnnotationsQueryVariables } from '../../../graphql/client/graphql.ts';
 import { AnnotationSymbolPicker } from '../AnnotationSymbolPicker';
@@ -41,22 +41,23 @@ export const AnnotationFilterExpression = ({
   };
 
   return (
-    <Paper shadow="xs" radius="xl" withBorder p="sm">
-      <Group justify={'space-between'}>
-        <Group>
-          <IconFilterSearch size={20} />
+    <Group justify={'space-between'}>
+      <Group>
+        <Text>Filter by</Text>
+        <Paper withBorder={true} w={56}>
           <AnnotationSymbolPicker
             size={'xs'}
+            w={54}
             symbol={getAnnotationsQueryVariables.input?.filter ?? ''}
             onSymbolChange={handleSymbolChange}
           />
-        </Group>
-        <Group>
-          <ActionIcon variant="transparent" size="sm" onClick={handleClearClick}>
-            <IconFilterCancel size={20} />
-          </ActionIcon>
-        </Group>
+        </Paper>
       </Group>
-    </Paper>
+      <Group>
+        <ActionIcon variant="transparent" size={'lg'} onClick={handleClearClick}>
+          <IconSquareRoundedXFilled />
+        </ActionIcon>
+      </Group>
+    </Group>
   );
 };
