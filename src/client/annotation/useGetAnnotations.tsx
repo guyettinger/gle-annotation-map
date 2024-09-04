@@ -20,7 +20,7 @@ const annotationsQuery = graphql(/* GraphQL */ `
 
 export const useGetAnnotations = (getAnnotationsQueryVariables: GetAnnotationsQueryVariables) => {
   return useQuery({
-    queryKey: ['annotations', getAnnotationsQueryVariables.input?.filter],
+    queryKey: ['annotations', getAnnotationsQueryVariables.input],
     queryFn: () => executeGraphql(annotationsQuery, getAnnotationsQueryVariables),
   });
 };
