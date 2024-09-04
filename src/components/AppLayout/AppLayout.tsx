@@ -4,7 +4,11 @@ import { ActionIcon, AppShell, Box, Burger, Group, Divider, Text, Stack } from '
 import { useDisclosure } from '@mantine/hooks';
 import '@mantine/core/styles.css';
 import { IconX } from '@tabler/icons-react';
-import { Annotation, AnnotationInput, GetAnnotationsQueryVariables } from '../../../graphql/client/graphql.ts';
+import {
+  Annotation,
+  AnnotationInput,
+  GetAnnotationsQueryVariables,
+} from '../../../graphql/client/graphql.ts';
 import { useGetAnnotations } from '../../client/annotation/useGetAnnotations.tsx';
 import { useCreateAnnotation } from '../../client/annotation/useCreateAnnotation.tsx';
 import { useUpdateAnnotation } from '../../client/annotation/useUpdateAnnotation.tsx';
@@ -38,12 +42,13 @@ export const AppLayout = () => {
 
   // all annotations
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
-  const [getAnnotationsVariables, setGetAnnotationsVariables] = useState<GetAnnotationsQueryVariables>({
-    input: {
-      filter: undefined,
-      take: 1000
-    }
-  });
+  const [getAnnotationsVariables, setGetAnnotationsVariables] =
+    useState<GetAnnotationsQueryVariables>({
+      input: {
+        filter: undefined,
+        take: 1000,
+      },
+    });
   const { data: annotationsData } = useGetAnnotations(getAnnotationsVariables);
   useEffect(() => {
     const annotations = annotationsData?.getAnnotations?.annotations?.filter((x) => !!x);
@@ -62,10 +67,9 @@ export const AppLayout = () => {
   // delete an annotation
   const deleteAnnotationMutation = useDeleteAnnotation();
 
-
-  const handleOnQueryVariablesChange = (queryVariables:GetAnnotationsQueryVariables) => {
+  const handleOnQueryVariablesChange = (queryVariables: GetAnnotationsQueryVariables) => {
     setGetAnnotationsVariables(queryVariables);
-  }
+  };
 
   // annotation item handlers
   const handleAnnotationItemClick = (annotation: Annotation) => {
@@ -171,14 +175,18 @@ export const AppLayout = () => {
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md">
+        <Group h="100%" px="sm">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Text size={'xl'}>{emoji} Moji Map</Text>
+          <Text size={'32px'}>{emoji}</Text>
+          <Text size={'xl'}>Moji Map</Text>
         </Group>
       </AppShell.Header>
       <AppShell.Navbar>
         <Stack p={'sm'}>
-          <AnnotationFilterExpression queryVariables={getAnnotationsVariables} onQueryVariablesChange={handleOnQueryVariablesChange}/>
+          <AnnotationFilterExpression
+            queryVariables={getAnnotationsVariables}
+            onQueryVariablesChange={handleOnQueryVariablesChange}
+          />
         </Stack>
         <Divider />
         <AnnotationList annotations={annotations} renderAnnotationItem={renderAnnotationItem} />
