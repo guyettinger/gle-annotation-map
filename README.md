@@ -1,15 +1,41 @@
-# Annotations App
+# 👍 Moji Map
 
-### React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Created with [Vite](https://vitejs.dev/guide/)
+### a simple map with emoji-based annotations
 
 ## Getting Started
 
 To run app locally:
 
-- Run `npm i && npm start`
+```shell
+npm i && npm start
+```
 
-The app will start on http://localhost:3000
+The app will start on http://localhost:3000.
+
+The server will start on http://localhost:4000/graphql
+
+## Development
+Install
+```shell
+npm install
+```
+Create/Migrate Database
+```shell
+npm run migrate
+```
+Generate Backend Graphql Types
+```shell
+npm run generate-server
+```
+Generate Frontend Graphql Types
+```shell
+npm run generate-client
+```
+Start Backend
+```shell
+npm run backend
+```
+Start Frontend
+```shell
+npm run frontend
+```
