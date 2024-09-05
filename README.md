@@ -39,3 +39,7 @@ Start Frontend
 ```shell
 npm run frontend
 ```
+Run Storybook
+```
+npm run storybook
+```
