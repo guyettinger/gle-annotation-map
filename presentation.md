@@ -26,7 +26,7 @@
     - graphql can generate typescript types that can from a schema
         - this provides fullstack type-safety
 
-#### Backend
+### Backend
 
 - Express https://expressjs.com/
     - a minimalist api framework for creating backends on node
