@@ -15,7 +15,9 @@
     "generate": "npm run generate-server && npm run generate-client",
     "generate-client": "rimraf ./graphql/client/ && graphql-codegen --config codegen-client.ts",
     "generate-server": "rimraf ./graphql/server/ && graphql-codegen --config codegen-server.ts",
-    "postinstall": "npm run migrate && npm run generate"
+    "postinstall": "npm run migrate && npm run generate",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@mantine/core": "^7.12.2",
@@ -33,11 +35,20 @@
     "react-query-kit": "^3.3.0"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^1.8.0",
     "@eslint/js": "^9.9.0",
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/typescript": "^4.0.9",
     "@graphql-codegen/typescript-resolvers": "^4.2.1",
     "@prisma/client": "5.19.0",
+    "@storybook/addon-essentials": "^8.2.9",
+    "@storybook/addon-interactions": "^8.2.9",
+    "@storybook/addon-links": "^8.2.9",
+    "@storybook/addon-onboarding": "^8.2.9",
+    "@storybook/blocks": "^8.2.9",
+    "@storybook/react": "^8.2.9",
+    "@storybook/react-vite": "^8.2.9",
+    "@storybook/test": "^8.2.9",
     "@types/express": "^4.17.21",
     "@types/mapbox-gl": "^3.4.0",
     "@types/react": "^18.3.3",
@@ -47,6 +58,7 @@
     "eslint": "^9.9.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
+    "eslint-plugin-storybook": "^0.8.0",
     "globals": "^15.9.0",
     "postcss": "^8.4.41",
     "postcss-preset-mantine": "^1.17.0",
@@ -54,9 +66,15 @@
     "prettier": "3.3.3",
     "prisma": "5.19.0",
     "rimraf": "^5.0.5",
+    "storybook": "^8.2.9",
     "tsx": "^4.19.0",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }
